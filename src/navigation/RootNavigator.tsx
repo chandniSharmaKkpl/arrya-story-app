@@ -4,6 +4,9 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LanguageSelection from '../screen/languageSelection/LanguageSelection';
 import { Screen } from '../constants/ScreenName';
 import AgeSelection from '../screen/ageSelection/AgeSelection';
+import StoryList from '../screen/storyList/StoryList';
+import Player from '../screen/player/Player';
+import StoryDetails from '../screen/storyDetails/StoryDetails';
 
 const Stack = createNativeStackNavigator();
 
@@ -17,6 +20,9 @@ const MainRoute: React.FC = () => {
                     options={{ title: 'Select Language' }}
                 />
                 <Stack.Screen name={Screen.ageSelection} component={AgeSelection} />
+                <Stack.Screen name={Screen.storyList} component={StoryList} />
+                <Stack.Screen name={Screen.storyDetails} component={StoryDetails} />
+                <Stack.Screen name={Screen.player} component={Player} />
             </Stack.Navigator>
         </NavigationContainer>
     );

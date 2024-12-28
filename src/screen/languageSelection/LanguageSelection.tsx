@@ -1,8 +1,9 @@
 import React from 'react';
-import { View } from 'react-native';
+import { Button, View } from 'react-native';
 import AppText from '../../globals/components/appText/AppTest';
+import { Screen } from '../../constants/ScreenName';
 
-const LanguageSelection = () => {
+const LanguageSelection = ({ navigation }) => {
     return (
         <View>
             <AppText
@@ -10,6 +11,10 @@ const LanguageSelection = () => {
                 color={'#000'}
                 text={'Language Selection'}
                 fontSize={20}
+            />
+            <Button
+                title="Select English"
+                onPress={() => navigation.navigate(Screen.ageSelection)}
             />
         </View>
     );

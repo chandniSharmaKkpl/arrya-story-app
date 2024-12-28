@@ -1,10 +1,15 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Button, Text, View } from 'react-native';
+import { Screen } from '../../constants/ScreenName';
 
-const AgeSelection = () => {
+const AgeSelection = ({ navigation }) => {
     return (
         <View>
-            <Text>Language Selection Screen</Text>
+            <Text>Age Selection Screen</Text>
+            <Button
+                title="Select English"
+                onPress={() => navigation.navigate(Screen.storyList)}
+            />
         </View>
     );
 };
