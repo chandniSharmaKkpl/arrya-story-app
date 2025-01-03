@@ -1,19 +1,52 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     View,
     Button,
     StyleSheet,
+    Platform,
 } from 'react-native';
 import Sound from 'react-native-sound';
 import RNFS from 'react-native-fs';
 import axios from 'axios';
 import AppText from '../../globals/components/appText/AppTest';
+import {RewardedAd, RewardedAdEventType, TestIds} from 'react-native-google-mobile-ads';
 
 const Player = ({ navigation, route }) => {
     const storyData = route?.params?.storyData;
 
     const GOOGLE_API_KEY = 'AIzaSyB4haSplaBMoJ9Si1Azu-Pc7mFjIZIU1cc';
+
+    const adId = __DEV__
+  ? TestIds.REWARDED
+  : 'ca-app-pub-8022775059437835/4453507095';
+
+
+// Create the RewardedAd instance
+const rewarded = RewardedAd.createForAdRequest(adId, {
+    keywords: ['fashion', 'clothing'],
+  });
+
+useEffect(() => {
+    const unsubscribeLoaded = rewarded.addAdEventListener(RewardedAdEventType.LOADED, () => {
+      rewarded.show();
+    });
+
+    const unsubscribeEarned = rewarded.addAdEventListener(
+      RewardedAdEventType.EARNED_REWARD,
+      reward => {
+        console.log('User earned reward of ', reward);
+      },
+    );
+
+    rewarded.load();
+
+    return () => {
+      unsubscribeLoaded();
+      unsubscribeEarned();
+    };
+  }, []);
+
 
     let currentSound = null;
     const [isPaused, setIsPaused] = useState(false);

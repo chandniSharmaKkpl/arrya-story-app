@@ -1,4 +1,8 @@
 {
   "name": "aaryaApp",
-  "displayName": "aaryaApp"
+  "displayName": "aaryaApp",
+  "react-native-google-mobile-ads": {
+    "ios_app_id": "ca-app-pub-8022775059437835~3635249445",
+    "android_app_id": "ca-app-pub-8022775059437835~3635249445"
+  }
 }

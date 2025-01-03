@@ -17,9 +17,9 @@ const MainRoute: React.FC = () => {
                 <Stack.Screen
                     name={Screen.languageSelection}
                     component={LanguageSelection}
-                    options={{ title: 'Select Language' }}
+                    options={{ title: 'Select Language', headerShown: false }}
                 />
-                <Stack.Screen name={Screen.ageSelection} component={AgeSelection} />
+                <Stack.Screen name={Screen.ageSelection} component={AgeSelection} options={{ title: 'Select Language', headerShown: false }}/>
                 <Stack.Screen name={Screen.storyList} component={StoryList} />
                 <Stack.Screen name={Screen.storyDetails} component={StoryDetails} />
                 <Stack.Screen name={Screen.player} component={Player} />
