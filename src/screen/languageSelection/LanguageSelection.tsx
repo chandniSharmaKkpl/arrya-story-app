@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   View,
   Text,
@@ -14,6 +14,7 @@ import { Screen } from '../../constants/ScreenName';
 import { Fonts } from '../../constants/Fonts';
 import { Colors } from '../../constants/Colors';
 import { Images } from '../../constants/Images';
+import * as Animatable from 'react-native-animatable';
 
 const LanguageSelectionScreen = ({ navigation }) => {
   const [selectedLanguage, setSelectedLanguage] = useState('English');
@@ -28,7 +29,7 @@ const LanguageSelectionScreen = ({ navigation }) => {
         <Text style={styles.title}>Select Your Language</Text>
       </View>
       <View style={styles.languageSelectionContainer}>
-        <View style={styles.languageImageContainer}>
+        <Animatable.View animation="fadeInUp" direction="alternate" iterationCount={1} style={styles.languageImageContainer}>
           <Image
             source={Images.englishEmojiIcon}
             style={{height: 100, width: 100}}
@@ -40,7 +41,7 @@ const LanguageSelectionScreen = ({ navigation }) => {
             style={{height: 100, width: 100}}
             resizeMode="contain"
           />
-        </View>
+        </Animatable.View>
         <View style={styles.optionsContainer}>
           <TouchableOpacity
             style={styles.option}

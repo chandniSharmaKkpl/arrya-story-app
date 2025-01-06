@@ -3,5 +3,8 @@ export const Screen = {
     ageSelection: 'ageSelection',
     storyList: 'storyList',
     storyDetails: 'storyDetails',
-    player: 'player'
+    player: 'player',
+    splashScreen: 'splashScreen',
+    selectCategory: 'selectCategory',
+    selectStory: 'selectStory'
 }

@@ -15,13 +15,14 @@ import {
 import {Fonts} from '../../constants/Fonts';
 import {Colors} from '../../constants/Colors';
 import {Images} from '../../constants/Images';
+import * as Animatable from 'react-native-animatable';
 
 const AgeSelection = ({navigation}) => {
 
   const [selectedAge, setSelectedAge] = useState('0to5');
 
   const handleContinue = () => {
-    navigation.navigate(Screen.storyList);
+    navigation.navigate(Screen.selectCategory);
   };
 
   return (
@@ -30,6 +31,7 @@ const AgeSelection = ({navigation}) => {
         <Text style={styles.title}>Select Age Group</Text>
       </View>
       <View style={styles.ageSelectionMenu}>
+        <Animatable.View animation="bounceIn" duration={1000} direction="alternate" iterationCount={1}>
         <TouchableOpacity
           style={styles.ageOptionContainer}
           onPress={() => setSelectedAge('0to5')}
@@ -52,6 +54,8 @@ const AgeSelection = ({navigation}) => {
             )}
           </View>
         </TouchableOpacity>
+        </Animatable.View>
+        <Animatable.View animation="bounceIn" duration={1000} direction="alternate" iterationCount={1}>
         <TouchableOpacity
           style={styles.ageOptionContainer}
           onPress={() => setSelectedAge('5to10')}
@@ -74,6 +78,8 @@ const AgeSelection = ({navigation}) => {
             )}
           </View>
         </TouchableOpacity>
+        </Animatable.View>
+        <Animatable.View animation="bounceIn" duration={1000} direction="alternate" iterationCount={1}>
         <TouchableOpacity
           style={styles.ageOptionContainer}
           onPress={() => setSelectedAge('10to15')}
@@ -96,6 +102,7 @@ const AgeSelection = ({navigation}) => {
             )}
           </View>
         </TouchableOpacity>
+        </Animatable.View>
       </View>
       <TouchableOpacity style={styles.continueButton} onPress={handleContinue}>
         <Text style={styles.continueText}>Continue</Text>
