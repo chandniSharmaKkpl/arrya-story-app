@@ -19,26 +19,51 @@ import {Colors} from '../../constants/Colors';
 import {Images} from '../../constants/Images';
 import Papa from 'papaparse';
 import * as Animatable from 'react-native-animatable';
+import {StoryFiles} from '../../constants/StoryFile';
+import userData from '../../helpers/userData';
+import {WordConstants} from '../../constants/WordConstants';
 
-const AgeSelection = ({navigation}) => {
-  const STORY_FILE =
-    'https://docs.google.com/spreadsheets/d/e/2PACX-1vQs9fHrUpJTDHoMHEKJSMaAZOqsW5miQhEMYunUoKj2K2MQOkzQUF_6cCln_PKi9Ap9THtrrUyMkMKd/pub?gid=1323515163&single=true&output=csv';
-
+const AgeSelection = ({navigation, route}) => {
   const [storyArray, setStoryArray] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedSubcategory, setSelectedSubcategory] = useState(null);
+  const [currentLanguage, setCurrentLanguage] = useState('English');
+  const subCategories = route?.params?.subCategory;
+  console.log('subCategories', subCategories);
 
   const handleContinue = () => {
-    navigation.navigate(Screen.StoryDetails);
+    navigation.navigate(Screen.storyDetails, {
+      storyData: selectedSubcategory,
+    });
+  };
+
+  const getCategoryName = (categoryName: any) => {
+    switch (categoryName) {
+      case 'FAIRY TALES':
+        return StoryFiles.FAIRYTALES;
+      case 'ANIMALS':
+        return StoryFiles.ANIMALS;
+      case 'SUPERHERO':
+        return StoryFiles.SUPERHERO;
+      case 'SCIENCE':
+        return StoryFiles.SCIENCE_ADVENTURE;
+      case 'GEOGRAPHY':
+        return StoryFiles.GEOGRAPHY;
+      case 'HISTORY':
+        return StoryFiles.HISTORY;
+      default:
+        return null;
+    }
   };
 
   const fetchStory = async () => {
+    const getCategory = getCategoryName(subCategories.nameEng);
     setLoading(true);
     try {
-      const response = await fetch(STORY_FILE);
+      const response = await fetch(getCategory);
       const csvData = await response.text();
       Papa.parse(csvData, {
-        complete: result => {
+        complete: (result: any) => {
           setStoryArray(result.data);
         },
         header: true,
@@ -52,33 +77,44 @@ const AgeSelection = ({navigation}) => {
 
   useEffect(() => {
     fetchStory();
+    const unsubscribe = navigation.addListener('focus', async () => {
+      const data = await userData.getUserData();
+      console.log('Refreshed userData on selectCategoryScreen', data);
+      setCurrentLanguage(data.selectedLanguage);
+    });
+    return unsubscribe;
   }, []);
 
-  console.log('selectedSubcategory', selectedSubcategory)
-
-  const renderItem = ({item}) => {
+  const renderItem = ({item, index}: any) => {
     console.log('item', item);
     return (
       <View style={styles.ageSelectionMenu}>
         <Animatable.View
-          animation="fadeInLeft"
+          animation="fadeInDown"
           duration={1000}
+          delay={index * 500}
           direction="alternate"
           iterationCount={1}
-          style={{justifyContent: 'center', alignItems: 'center'}}
-          >
+          style={{justifyContent: 'center', alignItems: 'center'}}>
           <TouchableOpacity
             style={styles.ageOptionContainer}
-            onPress={() => setSelectedSubcategory(item.SubCategory)}
+            onPress={() => setSelectedSubcategory(item)}
             activeOpacity={1}>
-              <Text style={styles.subCategoryText}>{item.SubCategory}</Text>
+            <Text style={styles.subCategoryText}>
+              {currentLanguage === 'English'
+                ? item.SubCategoryEng
+                : item.SubCategoryHin}
+            </Text>
             <View
               style={
-                selectedSubcategory === item.SubCategory
+                selectedSubcategory?.SubCategoryEng === item.SubCategoryEng ||
+                selectedSubcategory?.SubCategoryHin === item.SubCategoryHin
                   ? styles.radioButtonContainer
                   : styles.emptyRadioContainer
               }>
-              {selectedSubcategory === item.SubCategory && (
+              {(selectedSubcategory?.SubCategoryEng === item.SubCategoryEng ||
+                selectedSubcategory?.SubCategoryHin ===
+                  item.SubCategoryHin) && (
                 <Image
                   source={Images.checkIcon}
                   style={styles.checkIcon}
@@ -94,15 +130,25 @@ const AgeSelection = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.selectLanguageContainer}>
-        <Text style={styles.title}>Select Story</Text>
-      </View>
       {loading ? (
         <ActivityIndicator size="large" color="#000" />
       ) : (
         <>
+          <Animatable.View
+            style={styles.selectLanguageContainer}
+            animation="fadeInDown"
+            duration={1000}
+            // delay={500}
+            direction="alternate"
+            iterationCount={1}>
+            <Text style={styles.title}>
+              {currentLanguage === 'English'
+                ? WordConstants.selectStory[0]
+                : WordConstants.selectStory[1]}
+            </Text>
+          </Animatable.View>
           <FlatList
-            data={storyArray.slice(0,3)}
+            data={storyArray.slice(0, 3)}
             renderItem={renderItem}
             keyExtractor={(item, index) => index.toString()}
             contentContainerStyle={{justifyContent: 'center'}}
@@ -110,7 +156,11 @@ const AgeSelection = ({navigation}) => {
           <TouchableOpacity
             style={styles.continueButton}
             onPress={handleContinue}>
-            <Text style={styles.continueText}>Continue</Text>
+            <Text style={styles.continueText}>
+              {currentLanguage === 'English'
+                ? WordConstants.continueButton[0]
+                : WordConstants.continueButton[1]}
+            </Text>
           </TouchableOpacity>
         </>
       )}
@@ -123,7 +173,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
   },
   selectLanguageContainer: {
     marginTop: hp('10%'),
@@ -185,9 +235,9 @@ const styles = StyleSheet.create({
   },
   subCategoryText: {
     fontFamily: Fonts.poppins_medium,
-    fontSize: 22,
-    textAlign: 'center'
-  }
+    fontSize: 15,
+    textAlign: 'center',
+  },
 });
 
 export default AgeSelection;

@@ -14,6 +14,7 @@ import {RewardedAd, RewardedAdEventType, TestIds} from 'react-native-google-mobi
 
 const Player = ({ navigation, route }) => {
     const storyData = route?.params?.storyData;
+    console.log('storyData=========-------->', storyData)
 
     const GOOGLE_API_KEY = 'AIzaSyB4haSplaBMoJ9Si1Azu-Pc7mFjIZIU1cc';
 
@@ -152,7 +153,7 @@ useEffect(() => {
             <AppText
                 regular
                 color={'#000'}
-                text={storyData.Story_Name}
+                text={storyData.SubCategory}
                 fontSize={20}
                 style={{ flex: 1 }}
             />

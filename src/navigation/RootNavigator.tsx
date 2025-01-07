@@ -23,13 +23,13 @@ const MainRoute: React.FC = () => {
                     component={LanguageSelection}
                     options={{ title: 'Select Language', headerShown: false }}
                 />
-                <Stack.Screen name={Screen.ageSelection} component={AgeSelection} options={{ title: 'Select Language', headerShown: false }}/>
-                <Stack.Screen name={Screen.selectCategory} component={SelectCategory} options={{ title: 'Select Language', headerShown: false }}/>
-                <Stack.Screen name={Screen.selectStory} component={SelectStory} options={{ title: 'Select Language', headerShown: false }}/>
+                <Stack.Screen name={Screen.ageSelection} component={AgeSelection} options={{ headerShown: false }}/>
+                <Stack.Screen name={Screen.selectCategory} component={SelectCategory} options={{ headerShown: false }}/>
+                <Stack.Screen name={Screen.selectStory} component={SelectStory} options={{ headerShown: false }}/>
                 <Stack.Screen name={Screen.storyList} component={StoryList} />
-                <Stack.Screen name={Screen.storyDetails} component={StoryDetails} />
+                <Stack.Screen name={Screen.storyDetails} component={StoryDetails} options={{ headerShown: false }}/>
                 <Stack.Screen name={Screen.player} component={Player} />
-                <Stack.Screen name={Screen.splashScreen} component={SplashScreen} options={{ headerShown: false }}/>
+                <Stack.Screen name={Screen.splashScreen} component={SplashScreen} options={{ headerShown: false, gestureEnabled: false }}/>
             </Stack.Navigator>
         </NavigationContainer>
     );

@@ -1,26 +1,35 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  Image,
-} from 'react-native';
+import {View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import { Screen } from '../../constants/ScreenName';
-import { Fonts } from '../../constants/Fonts';
-import { Colors } from '../../constants/Colors';
-import { Images } from '../../constants/Images';
+import {Screen} from '../../constants/ScreenName';
+import {Fonts} from '../../constants/Fonts';
+import {Colors} from '../../constants/Colors';
+import {Images} from '../../constants/Images';
 import * as Animatable from 'react-native-animatable';
+import userData from '../../helpers/userData';
+import { WordConstants } from '../../constants/WordConstants';
 
-const LanguageSelectionScreen = ({ navigation }) => {
+const LanguageSelectionScreen = ({navigation}) => {
   const [selectedLanguage, setSelectedLanguage] = useState('English');
 
-  const handleContinue = () => {
-    navigation.navigate(Screen.ageSelection, {selectedLanguage: selectedLanguage})
+  const handleContinue = async () => {
+    const existingUserData = await userData.getUserData();
+    if (existingUserData && Object.keys(existingUserData).length > 0) {
+      console.log('User data exists');
+      console.log('getUserData', existingUserData);
+      const updatedUserData = {
+        ...existingUserData, // Keep any other existing fields
+        selectedLanguage: selectedLanguage, // Update the selected language
+      };
+      console.log('updatedUserData', updatedUserData)
+      await userData.setUserData(updatedUserData);
+    } else {
+      await userData.setUserData({ selectedLanguage: selectedLanguage });
+    }
+    navigation.navigate(Screen.ageSelection);
   };
 
   return (
@@ -29,66 +38,74 @@ const LanguageSelectionScreen = ({ navigation }) => {
         <Text style={styles.title}>Select Your Language</Text>
       </View>
       <View style={styles.languageSelectionContainer}>
-        <Animatable.View animation="fadeInUp" direction="alternate" iterationCount={1} style={styles.languageImageContainer}>
+        <View
+          // animation="fadeInUp"
+          // direction="alternate"
+          // iterationCount={1}
+          style={styles.languageImageContainer}>
           <Image
             source={Images.englishEmojiIcon}
-            style={{height: 100, width: 100}}
+            style={styles.EmojiImage}
             resizeMode="contain"
           />
 
           <Image
             source={Images.hindiEmojiIcon}
-            style={{height: 100, width: 100}}
+            style={styles.EmojiImage}
             resizeMode="contain"
           />
-        </Animatable.View>
+        </View>
         <View style={styles.optionsContainer}>
-          <TouchableOpacity
-            style={styles.option}
-            onPress={() => setSelectedLanguage('English')}
-            activeOpacity={1}>
-            <View
-              style={
-                selectedLanguage === 'English'
-                  ? styles.radioButtonContainer
-                  : styles.emptyRadioContainer
-              }>
-              {selectedLanguage === 'English' && (
-                <Image
-                  source={Images.checkIcon}
-                  style={styles.checkIcon}
-                  resizeMode="contain"
-                />
-              )}
-            </View>
-            <View style={styles.languageLogoEngContainer}>
-              <Text style={styles.languageEngText}>A</Text>
-            </View>
-            <Text style={styles.languageName}>English</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.option}
-            onPress={() => setSelectedLanguage('Hindi')}
-            activeOpacity={1}>
-            <View
-              style={
-                selectedLanguage === 'Hindi'
-                  ? styles.radioButtonContainer
-                  : styles.emptyRadioContainer
-              }>
-              {selectedLanguage === 'Hindi' && (
-                <Image
-                  source={Images.checkIcon}
-                  style={styles.checkIcon}
-                  resizeMode="contain"
-                />
-              )}
-            </View>
-            <View style={styles.languageLogoHinContainer}>
-              <Text style={styles.languageHinText}>अ</Text>
-            </View>
-            <Text style={styles.languageName}>हिंदी</Text>
-          </TouchableOpacity>
+          {/* <Animatable.View animation="fadeInLeft" delay={500} duration={1000}> */}
+            <TouchableOpacity
+              style={styles.option}
+              onPress={() => setSelectedLanguage('English')}
+              activeOpacity={1}>
+              <View
+                style={
+                  selectedLanguage === 'English'
+                    ? styles.radioButtonContainer
+                    : styles.emptyRadioContainer
+                }>
+                {selectedLanguage === 'English' && (
+                  <Image
+                    source={Images.checkIcon}
+                    style={styles.checkIcon}
+                    resizeMode="contain"
+                  />
+                )}
+              </View>
+              <View style={styles.languageLogoEngContainer}>
+                <Text style={styles.languageEngText}>A</Text>
+              </View>
+              <Text style={styles.languageName}>English</Text>
+            </TouchableOpacity>
+          {/* </Animatable.View> */}
+          {/* <Animatable.View animation="fadeInRight" delay={1000} duration={1000}> */}
+            <TouchableOpacity
+              style={styles.option}
+              onPress={() => setSelectedLanguage('Hindi')}
+              activeOpacity={1}>
+              <View
+                style={
+                  selectedLanguage === 'Hindi'
+                    ? styles.radioButtonContainer
+                    : styles.emptyRadioContainer
+                }>
+                {selectedLanguage === 'Hindi' && (
+                  <Image
+                    source={Images.checkIcon}
+                    style={styles.checkIcon}
+                    resizeMode="contain"
+                  />
+                )}
+              </View>
+              <View style={styles.languageLogoHinContainer}>
+                <Text style={styles.languageHinText}>अ</Text>
+              </View>
+              <Text style={styles.languageName}>हिंदी</Text>
+            </TouchableOpacity>
+          {/* </Animatable.View> */}
         </View>
       </View>
       <TouchableOpacity style={styles.continueButton} onPress={handleContinue}>
@@ -218,6 +235,10 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 18,
     fontFamily: Fonts.poppins_medium,
+  },
+  EmojiImage: {
+    height: 100,
+    width: 100,
   },
 });
 

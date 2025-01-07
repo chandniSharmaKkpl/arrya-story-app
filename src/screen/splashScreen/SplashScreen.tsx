@@ -8,19 +8,9 @@ import * as Animatable from 'react-native-animatable';
 const SplashScreen = () => {
   const navigation = useNavigation();
 
-  //   useEffect(() => {
-  //     console.log('i am calling')
-  //     setTimeout(() => {
-  //         console.log('i am calling after 2')
-
-  //     }, 2000);
-  //   }, []);
-
   const endAnimationAndNavigate = () => {
     navigation.navigate(Screen.languageSelection);
   };
-
-  console.log('here');
 
   return (
     <View style={styles.container}>

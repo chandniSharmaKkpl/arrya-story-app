@@ -5,5 +5,6 @@ export const Colors = {
     continueButtonColor: '#F35B6E',
     englishLanguageTextColor: '#1A7BC9',
     hindiLanguageTextColor: '#ED4C5C',
-    cardBorderColor: '#D9D9D9'
+    cardBorderColor: '#D9D9D9',
+    storyDetailContainer: '#f9f9f9'
   };

@@ -9,4 +9,5 @@ export const Images = {
     historyImage: require('../assets/images/HistoryImage.png'),
     scienceImage: require('../assets/images/ScienceImage.png'),
     animalsImage: require('../assets/images/AnimalsImage.png'),
+    playAudioImage: require('../assets/images/PlayMusic.png')
   };
