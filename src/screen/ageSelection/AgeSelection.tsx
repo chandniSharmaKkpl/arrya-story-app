@@ -26,13 +26,10 @@ const AgeSelection = ({navigation}) => {
   const handleContinue = async () => {
     const existingUserData = await userData.getUserData();
     if (existingUserData && Object.keys(existingUserData).length > 0) {
-      console.log('User data exists');
-      console.log('getUserData', existingUserData);
       const updatedUserData = {
-        ...existingUserData, // Keep any other existing fields
-        selectedAge: selectedAge, // Update the selected language
+        ...existingUserData,
+        selectedAge: selectedAge,
       };
-      console.log('updatedUserData', updatedUserData);
       await userData.setUserData(updatedUserData);
     } else {
       console.log('from the agescreen');
@@ -44,10 +41,9 @@ const AgeSelection = ({navigation}) => {
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', async () => {
       const data = await userData.getUserData();
-      console.log('Refreshed userData on screen focus:', data);
       setCurrentLanguage(data.selectedLanguage);
     });
-    return unsubscribe; // Clean up the listener on unmount
+    return unsubscribe;
   }, []);
 
   return (

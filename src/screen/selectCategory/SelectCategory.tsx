@@ -52,10 +52,9 @@ const CategoryScreen = () => {
   useEffect(() => {
       const unsubscribe = navigation.addListener('focus', async () => {
         const data = await userData.getUserData();
-        console.log('Refreshed userData on selectCategoryScreen', data);
         setCurrentLanguage(data.selectedLanguage)
       });
-      return unsubscribe; // Clean up the listener on unmount
+      return unsubscribe;
     }, []);
 
   const renderItem = ({item, index}: any) => (

@@ -29,7 +29,6 @@ const AgeSelection = ({navigation, route}) => {
   const [selectedSubcategory, setSelectedSubcategory] = useState(null);
   const [currentLanguage, setCurrentLanguage] = useState('English');
   const subCategories = route?.params?.subCategory;
-  console.log('subCategories', subCategories);
 
   const handleContinue = () => {
     navigation.navigate(Screen.storyDetails, {
@@ -79,23 +78,21 @@ const AgeSelection = ({navigation, route}) => {
     fetchStory();
     const unsubscribe = navigation.addListener('focus', async () => {
       const data = await userData.getUserData();
-      console.log('Refreshed userData on selectCategoryScreen', data);
       setCurrentLanguage(data.selectedLanguage);
     });
     return unsubscribe;
   }, []);
 
   const renderItem = ({item, index}: any) => {
-    console.log('item', item);
     return (
       <View style={styles.ageSelectionMenu}>
         <Animatable.View
           animation="fadeInDown"
           duration={1000}
-          delay={index * 500}
+          delay={index === 0 ? 500 : index * 500}
           direction="alternate"
           iterationCount={1}
-          style={{justifyContent: 'center', alignItems: 'center'}}>
+          style={styles.storyItemContainer}>
           <TouchableOpacity
             style={styles.ageOptionContainer}
             onPress={() => setSelectedSubcategory(item)}
@@ -138,7 +135,6 @@ const AgeSelection = ({navigation, route}) => {
             style={styles.selectLanguageContainer}
             animation="fadeInDown"
             duration={1000}
-            // delay={500}
             direction="alternate"
             iterationCount={1}>
             <Text style={styles.title}>
@@ -151,7 +147,7 @@ const AgeSelection = ({navigation, route}) => {
             data={storyArray.slice(0, 3)}
             renderItem={renderItem}
             keyExtractor={(item, index) => index.toString()}
-            contentContainerStyle={{justifyContent: 'center'}}
+            contentContainerStyle={styles.flatListContainerStyle}
           />
           <TouchableOpacity
             style={styles.continueButton}
@@ -238,6 +234,13 @@ const styles = StyleSheet.create({
     fontSize: 15,
     textAlign: 'center',
   },
+  storyItemContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  flatListContainerStyle: {
+    justifyContent: 'center'
+  }
 });
 
 export default AgeSelection;

@@ -12,19 +12,16 @@ import * as Animatable from 'react-native-animatable';
 import userData from '../../helpers/userData';
 import { WordConstants } from '../../constants/WordConstants';
 
-const LanguageSelectionScreen = ({navigation}) => {
+const LanguageSelectionScreen = ({navigation}: any) => {
   const [selectedLanguage, setSelectedLanguage] = useState('English');
 
   const handleContinue = async () => {
     const existingUserData = await userData.getUserData();
     if (existingUserData && Object.keys(existingUserData).length > 0) {
-      console.log('User data exists');
-      console.log('getUserData', existingUserData);
       const updatedUserData = {
-        ...existingUserData, // Keep any other existing fields
-        selectedLanguage: selectedLanguage, // Update the selected language
+        ...existingUserData,
+        selectedLanguage: selectedLanguage,
       };
-      console.log('updatedUserData', updatedUserData)
       await userData.setUserData(updatedUserData);
     } else {
       await userData.setUserData({ selectedLanguage: selectedLanguage });
@@ -39,9 +36,6 @@ const LanguageSelectionScreen = ({navigation}) => {
       </View>
       <View style={styles.languageSelectionContainer}>
         <View
-          // animation="fadeInUp"
-          // direction="alternate"
-          // iterationCount={1}
           style={styles.languageImageContainer}>
           <Image
             source={Images.englishEmojiIcon}
@@ -56,7 +50,6 @@ const LanguageSelectionScreen = ({navigation}) => {
           />
         </View>
         <View style={styles.optionsContainer}>
-          {/* <Animatable.View animation="fadeInLeft" delay={500} duration={1000}> */}
             <TouchableOpacity
               style={styles.option}
               onPress={() => setSelectedLanguage('English')}
@@ -80,8 +73,6 @@ const LanguageSelectionScreen = ({navigation}) => {
               </View>
               <Text style={styles.languageName}>English</Text>
             </TouchableOpacity>
-          {/* </Animatable.View> */}
-          {/* <Animatable.View animation="fadeInRight" delay={1000} duration={1000}> */}
             <TouchableOpacity
               style={styles.option}
               onPress={() => setSelectedLanguage('Hindi')}
@@ -105,7 +96,6 @@ const LanguageSelectionScreen = ({navigation}) => {
               </View>
               <Text style={styles.languageName}>हिंदी</Text>
             </TouchableOpacity>
-          {/* </Animatable.View> */}
         </View>
       </View>
       <TouchableOpacity style={styles.continueButton} onPress={handleContinue}>

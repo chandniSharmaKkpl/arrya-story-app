@@ -1,5 +1,5 @@
-import {Image, StyleSheet, Text, View} from 'react-native';
-import React, {useEffect} from 'react';
+import {StyleSheet, View} from 'react-native';
+import React from 'react';
 import {Images} from '../../constants/Images';
 import {useNavigation} from '@react-navigation/native';
 import {Screen} from '../../constants/ScreenName';

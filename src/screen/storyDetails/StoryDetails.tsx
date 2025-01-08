@@ -11,25 +11,31 @@ import * as Animatable from 'react-native-animatable';
 import {Colors} from '../../constants/Colors';
 import userData from '../../helpers/userData';
 import {Images} from '../../constants/Images';
+import {Fonts} from '../../constants/Fonts';
 
-const StoryDetails = ({navigation, route}) => {
+const StoryDetails = ({navigation, route}: any) => {
   const [currentLanguage, setCurrentLanguage] = useState('English');
   const storyData = route?.params?.storyData;
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', async () => {
       const data = await userData.getUserData();
-      console.log('Refreshed userData on selectCategoryScreen', data);
       setCurrentLanguage(data.selectedLanguage);
     });
     return unsubscribe;
   }, []);
 
+  const storyText = currentLanguage === 'English' 
+    ? storyData.StoryEnglish 
+    : storyData.StoryHindi;
+
+  const storyWords = storyText.split(/\s+/);
+
   return (
     <View style={styles.container}>
       <Animatable.View
         animation="fadeIn"
-        duration={4000}
+        duration={1000}
         direction="alternate"
         iterationCount={1}
         style={styles.storyHeadingContainer}>
@@ -56,24 +62,18 @@ const StoryDetails = ({navigation, route}) => {
         </TouchableOpacity>
       </Animatable.View>
 
-      <Animatable.View
-        animation="fadeIn"
-        duration={4000}
-        delay={500}
-        direction="alternate"
-        iterationCount={1}
-        style={styles.storyContainer}>
-        <AppText
-          regular
-          color={'#000'}
-          text={
-            currentLanguage === 'English'
-              ? storyData.StoryEnglish
-              : storyData.StoryHindi
-          }
-          fontSize={18}
-        />
-      </Animatable.View>
+      <View style={styles.storyContainer}>
+        {storyWords.map((word: any , index: any) => (
+          <Animatable.Text
+            key={index}
+            animation="fadeIn"
+            duration={500}
+            delay={index === 0 ? 200 : index * 200}
+            style={styles.storyText}>
+            {word}{' '}
+          </Animatable.Text>
+        ))}
+      </View>
     </View>
   );
 };
@@ -90,9 +90,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   storyContainer: {
-    padding: 15,
-    marginVertical: 10,
+    paddingHorizontal: 20,
+    marginTop: hp('5%'),
     width: '100%',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
   },
   storyHeadingContainer: {
     backgroundColor: Colors.continueButtonColor,
@@ -106,11 +108,18 @@ const styles = StyleSheet.create({
     height: 40,
     width: 40,
     marginVertical: 20,
-    marginRight: 10
+    marginRight: 10,
   },
   playMusicIcon: {
     height: '100%',
     width: '100%',
+  },
+  storyText: {
+    fontFamily: Fonts.poppins_regular,
+    color: '#000',
+    fontSize: 18,
+    lineHeight: 24,
+    flexWrap: 'wrap'
   },
 });
 
