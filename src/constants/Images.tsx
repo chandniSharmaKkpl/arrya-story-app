@@ -1,6 +1,6 @@
 export const Images = {
     checkIcon: require('../assets/images/CheckMark.png'),
-    englishEmojiIcon: require('../assets/images/HelloEmoji.png'),
+    englishEmojiIcon: require('../assets/images/HelloEmoji.gif'),
     hindiEmojiIcon: require('../assets/images/NamasteEmoji.png'),
     splashScreenLogo: require('../assets/images/SplashScreenLogo.png'),
     superHeroImage: require('../assets/images/SuperHero.png'),

@@ -1,5 +1,5 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
+import React, {useState} from 'react';
+import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -11,6 +11,7 @@ import {Images} from '../../constants/Images';
 import * as Animatable from 'react-native-animatable';
 import userData from '../../helpers/userData';
 import { WordConstants } from '../../constants/WordConstants';
+import FastImage from 'react-native-fast-image';
 
 const LanguageSelectionScreen = ({navigation}: any) => {
   const [selectedLanguage, setSelectedLanguage] = useState('English');
@@ -37,13 +38,13 @@ const LanguageSelectionScreen = ({navigation}: any) => {
       <View style={styles.languageSelectionContainer}>
         <View
           style={styles.languageImageContainer}>
-          <Image
+          <FastImage
             source={Images.englishEmojiIcon}
             style={styles.EmojiImage}
             resizeMode="contain"
           />
 
-          <Image
+          <FastImage
             source={Images.hindiEmojiIcon}
             style={styles.EmojiImage}
             resizeMode="contain"
@@ -61,7 +62,7 @@ const LanguageSelectionScreen = ({navigation}: any) => {
                     : styles.emptyRadioContainer
                 }>
                 {selectedLanguage === 'English' && (
-                  <Image
+                  <FastImage
                     source={Images.checkIcon}
                     style={styles.checkIcon}
                     resizeMode="contain"
@@ -84,7 +85,7 @@ const LanguageSelectionScreen = ({navigation}: any) => {
                     : styles.emptyRadioContainer
                 }>
                 {selectedLanguage === 'Hindi' && (
-                  <Image
+                  <FastImage
                     source={Images.checkIcon}
                     style={styles.checkIcon}
                     resizeMode="contain"

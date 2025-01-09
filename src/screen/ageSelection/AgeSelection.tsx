@@ -18,6 +18,7 @@ import {Images} from '../../constants/Images';
 import * as Animatable from 'react-native-animatable';
 import userData from '../../helpers/userData';
 import {WordConstants} from '../../constants/WordConstants';
+import FastImage from 'react-native-fast-image';
 
 const AgeSelection = ({navigation}) => {
   const [selectedAge, setSelectedAge] = useState('0to5');
@@ -86,7 +87,7 @@ const AgeSelection = ({navigation}) => {
                   : styles.emptyRadioContainer
               }>
               {selectedAge === '0to5' && (
-                <Image
+                <FastImage
                   source={Images.checkIcon}
                   style={styles.checkIcon}
                   resizeMode="contain"
@@ -119,7 +120,7 @@ const AgeSelection = ({navigation}) => {
                   : styles.emptyRadioContainer
               }>
               {selectedAge === '5to10' && (
-                <Image
+                <FastImage
                   source={Images.checkIcon}
                   style={styles.checkIcon}
                   resizeMode="contain"
@@ -152,7 +153,7 @@ const AgeSelection = ({navigation}) => {
                   : styles.emptyRadioContainer
               }>
               {selectedAge === '10to15' && (
-                <Image
+                <FastImage
                   source={Images.checkIcon}
                   style={styles.checkIcon}
                   resizeMode="contain"

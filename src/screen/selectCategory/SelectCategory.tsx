@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   FlatList,
   View,
   Text,
   TouchableOpacity,
-  StyleSheet,
-  Image,
+  StyleSheet
 } from 'react-native';
 import {categories} from '../../constants/CategoryConstant';
 import {
@@ -18,10 +17,11 @@ import * as Animatable from 'react-native-animatable';
 import {useNavigation} from '@react-navigation/native';
 import {Screen} from '../../constants/ScreenName';
 import userData from '../../helpers/userData';
-import { WordConstants } from '../../constants/WordConstants';
+import {WordConstants} from '../../constants/WordConstants';
+import FastImage from 'react-native-fast-image';
 
 const CategoryScreen = () => {
-  const [currentLanguage, setCurrentLanguage] = useState('English')
+  const [currentLanguage, setCurrentLanguage] = useState('English');
   const navigation = useNavigation();
 
   const getCategoryImage = (categoryName: any) => {
@@ -50,12 +50,12 @@ const CategoryScreen = () => {
   };
 
   useEffect(() => {
-      const unsubscribe = navigation.addListener('focus', async () => {
-        const data = await userData.getUserData();
-        setCurrentLanguage(data.selectedLanguage)
-      });
-      return unsubscribe;
-    }, []);
+    const unsubscribe = navigation.addListener('focus', async () => {
+      const data = await userData.getUserData();
+      setCurrentLanguage(data.selectedLanguage);
+    });
+    return unsubscribe;
+  }, []);
 
   const renderItem = ({item, index}: any) => (
     <Animatable.View
@@ -66,13 +66,15 @@ const CategoryScreen = () => {
       <TouchableOpacity
         style={styles.card}
         onPress={() => navigationWithCategory(item)}>
-        <Image
+        <FastImage
           source={getCategoryImage(item.nameEng)}
           style={styles.heroImage}
           resizeMode="contain"
         />
         <View style={styles.cardContent}>
-          <Text style={styles.cardText}>{currentLanguage === 'English' ? item.nameEng : item.nameHin}</Text>
+          <Text style={styles.cardText}>
+            {currentLanguage === 'English' ? item.nameEng : item.nameHin}
+          </Text>
         </View>
       </TouchableOpacity>
     </Animatable.View>
@@ -81,7 +83,11 @@ const CategoryScreen = () => {
   return (
     <View style={styles.container}>
       <View style={styles.selectLanguageContainer}>
-        <Text style={styles.title}>{currentLanguage === 'English' ? WordConstants.selectCategory[0] : WordConstants.selectCategory[1]}</Text>
+        <Text style={styles.title}>
+          {currentLanguage === 'English'
+            ? WordConstants.selectCategory[0]
+            : WordConstants.selectCategory[1]}
+        </Text>
       </View>
       <FlatList
         data={categories}
@@ -108,10 +114,11 @@ const styles = StyleSheet.create({
   },
   list: {
     justifyContent: 'center',
+    alignItems: 'center',
   },
   card: {
     flex: 1,
-    margin: 18,
+    margin: wp('2%'),
     height: hp('20%'),
     backgroundColor: '#E3F2FD',
     borderRadius: 20,

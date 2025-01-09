@@ -3,7 +3,6 @@ import {
   ActivityIndicator,
   Button,
   FlatList,
-  Image,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -22,8 +21,9 @@ import * as Animatable from 'react-native-animatable';
 import {StoryFiles} from '../../constants/StoryFile';
 import userData from '../../helpers/userData';
 import {WordConstants} from '../../constants/WordConstants';
+import FastImage from 'react-native-fast-image';
 
-const AgeSelection = ({navigation, route}) => {
+const SelectStory = ({navigation, route}) => {
   const [storyArray, setStoryArray] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedSubcategory, setSelectedSubcategory] = useState(null);
@@ -112,7 +112,7 @@ const AgeSelection = ({navigation, route}) => {
               {(selectedSubcategory?.SubCategoryEng === item.SubCategoryEng ||
                 selectedSubcategory?.SubCategoryHin ===
                   item.SubCategoryHin) && (
-                <Image
+                <FastImage
                   source={Images.checkIcon}
                   style={styles.checkIcon}
                   resizeMode="contain"
@@ -243,4 +243,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default AgeSelection;
+export default SelectStory;

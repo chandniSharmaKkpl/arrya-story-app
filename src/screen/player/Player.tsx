@@ -5,7 +5,6 @@ import {
   Button,
   StyleSheet,
   Platform,
-  Image,
   Text,
   TouchableOpacity,
 } from 'react-native';
@@ -27,6 +26,7 @@ import {
 } from 'react-native-responsive-screen';
 import Slider from '@react-native-community/slider';
 import {categories} from '../../constants/CategoryConstant';
+import FastImage from 'react-native-fast-image';
 
 const Player = ({navigation, route}) => {
   const [isPaused, setIsPaused] = useState(false);
@@ -36,7 +36,7 @@ const Player = ({navigation, route}) => {
   const storyData = route?.params?.storyData;
   const currentSoundRef = useRef<Sound | null>(null); // Using useRef for persistent sound reference
   const intervalRef = useRef<NodeJS.Timer | null>(null); // Ref for interval to track current time
-  console.log('storyData=========-------->', storyData);
+  // console.log('storyData=========-------->', storyData);
   const GOOGLE_API_KEY = 'AIzaSyB4haSplaBMoJ9Si1Azu-Pc7mFjIZIU1cc';
   const adId = __DEV__
     ? TestIds.REWARDED
@@ -48,8 +48,22 @@ const Player = ({navigation, route}) => {
       console.log('Refreshed userData on selectCategoryScreen', data);
       setCurrentLanguage(data.selectedLanguage);
     });
-    return unsubscribe;
-  }, [navigation]);
+
+    return () => {
+      if (currentSoundRef.current) {
+        currentSoundRef.current.stop(() => {
+          console.log('Sound stopped');
+        });
+        currentSoundRef.current.release();
+        currentSoundRef.current = null;
+      }
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+      unsubscribe();
+    };
+    // return unsubscribe;
+  }, []);
 
   const getCategoryName = (currentLanguage: string, categoryName: string | number) => {
     // Map to handle custom name matching
@@ -76,38 +90,52 @@ const Player = ({navigation, route}) => {
   };
 
   // Create the RewardedAd instance
-  //   const rewarded = RewardedAd.createForAdRequest(adId, {
-  //     keywords: ['fashion', 'clothing'],
-  //   });
+    const rewarded = RewardedAd.createForAdRequest(adId, {
+      keywords: ['fashion', 'clothing'],
+    });
 
-  //   useEffect(() => {
-  //     const unsubscribeLoaded = rewarded.addAdEventListener(
-  //       RewardedAdEventType.LOADED,
-  //       () => {
-  //         rewarded.show();
-  //       },
-  //     );
+    useEffect(() => {
+      const unsubscribeLoaded = rewarded.addAdEventListener(
+        RewardedAdEventType.LOADED,
+        () => {
+          rewarded.show();
+        },
+      );
 
-  //     const unsubscribeEarned = rewarded.addAdEventListener(
-  //       RewardedAdEventType.EARNED_REWARD,
-  //       reward => {
-  //         console.log('User earned reward of ', reward);
-  //       },
-  //     );
+      const unsubscribeEarned = rewarded.addAdEventListener(
+        RewardedAdEventType.EARNED_REWARD,
+        reward => {
+          console.log('User earned reward of ', reward);
+        },
+      );
 
-  //     rewarded.load();
+      rewarded.load();
 
-  //     return () => {
-  //       unsubscribeLoaded();
-  //       unsubscribeEarned();
-  //     };
-  //   }, []);
-
-  // let currentSound: Sound | null = null;
+      return () => {
+        unsubscribeLoaded();
+        unsubscribeEarned();
+      };
+    }, []);
 
   const playAudio = (path: string) => {
-    if (currentSoundRef.current) {
-      currentSoundRef.current.stop(() => console.log('Stopped previous audio'));
+    // console.log('first=======---------->')
+    if (currentSoundRef.current && isPaused) {
+      console.log('paused audio played')
+      intervalRef.current = setInterval(() => {
+        if (currentSoundRef.current?.isPlaying()) {
+          currentSoundRef.current.getCurrentTime(seconds =>
+            setCurrentTime(seconds),
+          );
+        } else {
+          clearInterval(intervalRef.current);
+        }
+      }, 1000);
+      currentSoundRef.current.play(() => setIsPaused(false));
+      return
+    } else {
+      console.log('only stopped previous audio')
+      currentSoundRef?.current?.getCurrentTime(seconds => setCurrentTime(seconds));
+      currentSoundRef?.current?.stop(() => console.log('Stopped previous audio'));
     }
 
     currentSoundRef.current = new Sound(path, '', error => {
@@ -117,7 +145,7 @@ const Player = ({navigation, route}) => {
       }
       setDuration(currentSoundRef.current?.getDuration() || 0);
       currentSoundRef?.current?.play(() => {
-        console.log('Playback finished successfully');
+        // console.log('Playback finished successfully');
         clearInterval(intervalRef.current);
         setCurrentTime(0);
       });
@@ -162,17 +190,31 @@ const Player = ({navigation, route}) => {
   const resumeAudio = () => {
     if (currentSoundRef.current && isPaused) {
       currentSoundRef.current.play(() => setIsPaused(false));
+      intervalRef.current = setInterval(() => {
+        if (currentSoundRef.current?.isPlaying()) {
+          currentSoundRef.current.getCurrentTime(seconds =>
+            setCurrentTime(seconds),
+          );
+        } else {
+          clearInterval(intervalRef.current);
+        }
+      }, 1000);
     }
   };
 
-  const stopAudio = () => {
-    if (currentSoundRef.current) {
-      currentSoundRef.current.stop(() => {
-        setIsPaused(false);
-        setCurrentTime(0);
-      });
-    }
-  };
+  const sliderHandle = (val) => {
+    currentSoundRef.current?.setCurrentTime(val)
+    setCurrentTime(val)
+  }
+
+  // const stopAudio = () => {
+  //   if (currentSoundRef.current) {
+  //     currentSoundRef.current.stop(() => {
+  //       setIsPaused(false);
+  //       setCurrentTime(0);
+  //     });
+  //   }
+  // };
 
   const createRequest = (text: any) => ({
     input: {
@@ -200,18 +242,7 @@ const Player = ({navigation, route}) => {
     try {
       const response = await axios.post(address, payload);
       const result = response.data;
-
       await RNFS.writeFile(path, result.audioContent, 'base64');
-
-      const fileStats = await RNFS.stat(path);
-      console.log('Audio file size:', fileStats.size);
-
-      if (fileStats.size > 0) {
-        playAudio(path);
-      } else {
-        console.warn('Audio file is empty or corrupt.');
-      }
-
       playAudio(path);
     } catch (err) {
       console.warn(err);
@@ -221,7 +252,7 @@ const Player = ({navigation, route}) => {
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
-        <Image
+        <FastImage
           source={Images.animalsImage}
           style={styles.image}
           resizeMode="contain"
@@ -241,7 +272,7 @@ const Player = ({navigation, route}) => {
         minimumValue={0}
         maximumValue={duration}
         value={currentTime}
-        onValueChange={value => currentSoundRef.current?.setCurrentTime(value)}
+        onSlidingComplete={value => sliderHandle(value)}
         minimumTrackTintColor={Colors.hindiLanguageTextColor}
         maximumTrackTintColor="#FFFFFF"
         thumbTintColor={Colors.hindiLanguageTextColor}
@@ -266,12 +297,12 @@ const Player = ({navigation, route}) => {
         <TouchableOpacity onPress={pauseAudio}>
           <Text style={styles.button}>Pause</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={resumeAudio}>
+        {/* <TouchableOpacity onPress={resumeAudio}>
           <Text style={styles.button}>Resume</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={stopAudio}>
+        </TouchableOpacity> */}
+        {/* <TouchableOpacity onPress={stopAudio}>
           <Text style={styles.button}>Stop</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     </View>
   );
@@ -318,7 +349,6 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   slider: {
-    // backgroundColor: 'red',
     width: '80%',
     height: 40,
   },
@@ -330,7 +360,7 @@ const styles = StyleSheet.create({
   },
   timeText: {
     fontSize: 16,
-    color: '#555',
+    color: Colors.hindiLanguageTextColor,
   },
   buttonContainer: {
     flexDirection: 'row',

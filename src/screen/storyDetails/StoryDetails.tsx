@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useEffect, useState} from 'react';
-import {View, StyleSheet, Image, TouchableOpacity} from 'react-native';
+import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import AppText from '../../globals/components/appText/AppTest';
 import {Screen} from '../../constants/ScreenName';
 import {
@@ -12,6 +12,7 @@ import {Colors} from '../../constants/Colors';
 import userData from '../../helpers/userData';
 import {Images} from '../../constants/Images';
 import {Fonts} from '../../constants/Fonts';
+import FastImage from 'react-native-fast-image';
 
 const StoryDetails = ({navigation, route}: any) => {
   const [currentLanguage, setCurrentLanguage] = useState('English');
@@ -58,7 +59,7 @@ const StoryDetails = ({navigation, route}: any) => {
               storyData: storyData,
             })
           }>
-          <Image source={Images.playAudioImage} style={styles.playMusicIcon} />
+          <FastImage source={Images.playAudioImage} style={styles.playMusicIcon} />
         </TouchableOpacity>
       </Animatable.View>
 
