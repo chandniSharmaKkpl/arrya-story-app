@@ -36,67 +36,79 @@ const LanguageSelectionScreen = ({navigation}: any) => {
         <Text style={styles.title}>Select Your Language</Text>
       </View>
       <View style={styles.languageSelectionContainer}>
-        <View
-          style={styles.languageImageContainer}>
-          <FastImage
-            source={Images.englishEmojiIcon}
-            style={styles.EmojiImage}
-            resizeMode="contain"
-          />
-
-          <FastImage
-            source={Images.hindiEmojiIcon}
-            style={styles.EmojiImage}
-            resizeMode="contain"
-          />
+        <View style={styles.languageImageContainer}>
+          <View style={styles.englishEmojiContainer}>
+            <FastImage
+              source={Images.namasteHindi}
+              style={styles.EmojiEnglishImage}
+              resizeMode="contain"
+            />
+            <FastImage
+              source={Images.wavingHandGif}
+              style={styles.englishEmojiHand}
+              resizeMode="contain"
+            />
+          </View>
+          <View style={styles.hindiEmojiContainer}>
+            <FastImage
+              source={Images.namasteHindi}
+              style={styles.EmojiHindiImage}
+              resizeMode="contain"
+            />
+            <FastImage
+              source={Images.namasteHandGif}
+              style={styles.hindiEmojiHand}
+              resizeMode="contain"
+            />
+          </View>
         </View>
         <View style={styles.optionsContainer}>
-            <TouchableOpacity
-              style={styles.option}
-              onPress={() => setSelectedLanguage('English')}
-              activeOpacity={1}>
-              <View
-                style={
-                  selectedLanguage === 'English'
-                    ? styles.radioButtonContainer
-                    : styles.emptyRadioContainer
-                }>
-                {selectedLanguage === 'English' && (
-                  <FastImage
-                    source={Images.checkIcon}
-                    style={styles.checkIcon}
-                    resizeMode="contain"
-                  />
-                )}
-              </View>
-              <View style={styles.languageLogoEngContainer}>
-                <Text style={styles.languageEngText}>A</Text>
-              </View>
-              <Text style={styles.languageName}>English</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.option}
-              onPress={() => setSelectedLanguage('Hindi')}
-              activeOpacity={1}>
-              <View
-                style={
-                  selectedLanguage === 'Hindi'
-                    ? styles.radioButtonContainer
-                    : styles.emptyRadioContainer
-                }>
-                {selectedLanguage === 'Hindi' && (
-                  <FastImage
-                    source={Images.checkIcon}
-                    style={styles.checkIcon}
-                    resizeMode="contain"
-                  />
-                )}
-              </View>
-              <View style={styles.languageLogoHinContainer}>
-                <Text style={styles.languageHinText}>अ</Text>
-              </View>
-              <Text style={styles.languageName}>हिंदी</Text>
-            </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.option}
+            onPress={() => setSelectedLanguage('English')}
+            activeOpacity={1}>
+            <View
+              style={
+                selectedLanguage === 'English'
+                  ? styles.radioButtonContainer
+                  : styles.emptyRadioContainer
+              }>
+              {selectedLanguage === 'English' && (
+                <FastImage
+                  source={Images.checkIcon}
+                  style={styles.checkIcon}
+                  resizeMode="contain"
+                />
+              )}
+            </View>
+            <View style={styles.languageLogoEngContainer}>
+              <Text style={styles.languageEngText}>A</Text>
+            </View>
+            <Text style={styles.languageName}>English</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.option}
+            onPress={() => setSelectedLanguage('Hindi')}
+            activeOpacity={1}>
+            <View
+              style={
+                selectedLanguage === 'Hindi'
+                  ? styles.radioButtonContainer
+                  : styles.emptyRadioContainer
+              }>
+              {selectedLanguage === 'Hindi' && (
+                <FastImage
+                  source={Images.checkIcon}
+                  style={styles.checkIcon}
+                  resizeMode="contain"
+                />
+              )}
+            </View>
+            <View style={styles.languageLogoHinContainer}>
+              <Text style={styles.languageHinText}>अ</Text>
+            </View>
+            <Text style={styles.languageName}>हिंदी</Text>
+          </TouchableOpacity>
         </View>
       </View>
       <TouchableOpacity style={styles.continueButton} onPress={handleContinue}>
@@ -156,9 +168,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   languageImageContainer: {
+    marginBottom: hp('3%'),
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: 20,
+    paddingHorizontal: 25,
   },
   emptyRadioContainer: {
     position: 'absolute',
@@ -227,9 +240,35 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontFamily: Fonts.poppins_medium,
   },
-  EmojiImage: {
-    height: 100,
-    width: 100,
+  EmojiEnglishImage: {
+    height: hp('13%'),
+    width: wp('21%'),
+  },
+  EmojiHindiImage: {
+    height: hp('12%'),
+    width: wp('20%'),
+  },
+  englishEmojiHand: {
+    bottom: 0,
+    left: 5,
+    position: 'absolute',
+    height: hp('8%'),
+    width: wp('13%'),
+  },
+  hindiEmojiHand: {
+    bottom: 0,
+    left: 18,
+    position: 'absolute',
+    height: hp('8%'),
+    width: wp('13%'),
+  },
+  englishEmojiContainer: {
+    left: 18,
+    top: 5,
+  },
+  hindiEmojiContainer: {
+    right: 25,
+    top: 5,
   },
 });
 

@@ -65,8 +65,10 @@ const Player = ({navigation, route}) => {
     // return unsubscribe;
   }, []);
 
-  const getCategoryName = (currentLanguage: string, categoryName: string | number) => {
-    // Map to handle custom name matching
+  const getCategoryName = (
+    currentLanguage: string,
+    categoryName: string | number,
+  ) => {
     const nameMapping = {
       FairyTales: 'FAIRY TALES',
       Animals: 'ANIMALS',
@@ -76,10 +78,8 @@ const Player = ({navigation, route}) => {
       SuperHero: 'SUPERHERO',
     };
 
-    // Find the mapped name for the given categoryName
     const mappedName = nameMapping[categoryName];
 
-    // If a mapped name exists, find it in the categories array
     if (mappedName) {
       const category = categories.find(cat => cat.nameEng === mappedName);
       if (category) {
@@ -90,37 +90,36 @@ const Player = ({navigation, route}) => {
   };
 
   // Create the RewardedAd instance
-    const rewarded = RewardedAd.createForAdRequest(adId, {
-      keywords: ['fashion', 'clothing'],
-    });
+  const rewarded = RewardedAd.createForAdRequest(adId, {
+    keywords: ['fashion', 'clothing'],
+  });
 
-    useEffect(() => {
-      const unsubscribeLoaded = rewarded.addAdEventListener(
-        RewardedAdEventType.LOADED,
-        () => {
-          rewarded.show();
-        },
-      );
+  useEffect(() => {
+    const unsubscribeLoaded = rewarded.addAdEventListener(
+      RewardedAdEventType.LOADED,
+      () => {
+        rewarded.show();
+      },
+    );
 
-      const unsubscribeEarned = rewarded.addAdEventListener(
-        RewardedAdEventType.EARNED_REWARD,
-        reward => {
-          console.log('User earned reward of ', reward);
-        },
-      );
+    const unsubscribeEarned = rewarded.addAdEventListener(
+      RewardedAdEventType.EARNED_REWARD,
+      reward => {
+        console.log('User earned reward of ', reward);
+      },
+    );
 
-      rewarded.load();
+    rewarded.load();
 
-      return () => {
-        unsubscribeLoaded();
-        unsubscribeEarned();
-      };
-    }, []);
+    return () => {
+      unsubscribeLoaded();
+      unsubscribeEarned();
+    };
+  }, []);
 
   const playAudio = (path: string) => {
-    // console.log('first=======---------->')
     if (currentSoundRef.current && isPaused) {
-      console.log('paused audio played')
+      console.log('paused audio played');
       intervalRef.current = setInterval(() => {
         if (currentSoundRef.current?.isPlaying()) {
           currentSoundRef.current.getCurrentTime(seconds =>
@@ -131,11 +130,15 @@ const Player = ({navigation, route}) => {
         }
       }, 1000);
       currentSoundRef.current.play(() => setIsPaused(false));
-      return
+      return;
     } else {
-      console.log('only stopped previous audio')
-      currentSoundRef?.current?.getCurrentTime(seconds => setCurrentTime(seconds));
-      currentSoundRef?.current?.stop(() => console.log('Stopped previous audio'));
+      console.log('only stopped previous audio');
+      currentSoundRef?.current?.getCurrentTime(seconds =>
+        setCurrentTime(seconds),
+      );
+      currentSoundRef?.current?.stop(() =>
+        console.log('Stopped previous audio'),
+      );
     }
 
     currentSoundRef.current = new Sound(path, '', error => {
@@ -172,10 +175,23 @@ const Player = ({navigation, route}) => {
   const playStory = async (storyItem: any) => {
     console.log('storyItem:', storyItem);
 
-    if (currentSoundRef.current) {
-      currentSoundRef.current.stop(() => {
-        console.log('Stopped previous story');
-      });
+    if (currentSoundRef.current && isPaused) {
+      currentSoundRef.current.play(() => setIsPaused(false));
+      intervalRef.current = setInterval(() => {
+        if (currentSoundRef.current?.isPlaying()) {
+          currentSoundRef.current.getCurrentTime(seconds =>
+            setCurrentTime(seconds),
+          );
+        } else {
+          clearInterval(intervalRef.current);
+        }
+      }, 1000);
+    } else {
+      if (currentSoundRef.current) {
+        currentSoundRef.current.stop(() => {
+          console.log('Stopped previous story');
+        });
+      }
     }
 
     geminiTextToSpeech(storyItem);
@@ -202,10 +218,10 @@ const Player = ({navigation, route}) => {
     }
   };
 
-  const sliderHandle = (val) => {
-    currentSoundRef.current?.setCurrentTime(val)
-    setCurrentTime(val)
-  }
+  const sliderHandle = val => {
+    currentSoundRef.current?.setCurrentTime(val);
+    setCurrentTime(val);
+  };
 
   // const stopAudio = () => {
   //   if (currentSoundRef.current) {

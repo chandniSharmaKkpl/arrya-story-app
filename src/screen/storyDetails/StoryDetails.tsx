@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    marginTop: hp('5%'),
+    marginTop: hp('6%'),
   },
   subCategoryContainer: {
     flex: 1,

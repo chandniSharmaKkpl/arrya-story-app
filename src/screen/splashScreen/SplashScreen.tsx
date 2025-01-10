@@ -9,7 +9,13 @@ const SplashScreen = () => {
   const navigation = useNavigation();
 
   const endAnimationAndNavigate = () => {
-    navigation.navigate(Screen.languageSelection);
+    // Use reset to clear the navigation stack and prevent going back to splash screen
+    setTimeout(() => {
+      navigation.reset({
+        index: 0, // Make the new screen the root
+        routes: [{ name: Screen.languageSelection }], // Navigate to the language selection screen
+      });
+    }, 1000); // Delay after animation
   };
 
   return (
