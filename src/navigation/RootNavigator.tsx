@@ -9,6 +9,7 @@ import StoryDetails from '../screen/storyDetails/StoryDetails';
 import SplashScreen from '../screen/splashScreen/SplashScreen';
 import SelectCategory from '../screen/selectCategory/SelectCategory';
 import SelectStory from '../screen/selectStory/SelectStory';
+import { Platform } from 'react-native';
 
 
 const Stack = createNativeStackNavigator();
@@ -20,7 +21,7 @@ const MainRoute: React.FC = () => {
                 <Stack.Screen
                     name={Screen.languageSelection}
                     component={LanguageSelection}
-                    options={{ title: 'Select Language', headerShown: false }}
+                    options={{ title: 'Select Language', headerShown: false, animation: Platform.OS === 'ios' ? 'fade' : 'default' }}
                 />
                 <Stack.Screen name={Screen.ageSelection} component={AgeSelection} options={{ headerShown: false }}/>
                 <Stack.Screen name={Screen.selectCategory} component={SelectCategory} options={{ headerShown: false }}/>

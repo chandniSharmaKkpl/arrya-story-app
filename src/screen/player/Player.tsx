@@ -36,7 +36,6 @@ const Player = ({navigation, route}) => {
   const storyData = route?.params?.storyData;
   const currentSoundRef = useRef<Sound | null>(null); // Using useRef for persistent sound reference
   const intervalRef = useRef<NodeJS.Timer | null>(null); // Ref for interval to track current time
-  // console.log('storyData=========-------->', storyData);
   const GOOGLE_API_KEY = 'AIzaSyB4haSplaBMoJ9Si1Azu-Pc7mFjIZIU1cc';
   const adId = __DEV__
     ? TestIds.REWARDED
@@ -265,11 +264,21 @@ const Player = ({navigation, route}) => {
     }
   };
 
+  const formatGoogleDriveLink = (link: string) => {
+    if (link.includes('/file/d/') && link.includes('/view?')) {
+      return link
+        .replace('/file/d/', '/uc?export=view&id=')
+        .replace('/view?usp=drive_link', '');
+    }
+    return link;
+  };
+  const formattedLink = formatGoogleDriveLink(storyData.SubCategoryImage);
+
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
         <FastImage
-          source={Images.animalsImage}
+          source={{uri: formattedLink, priority: FastImage.priority.high}}
           style={styles.image}
           resizeMode="contain"
         />

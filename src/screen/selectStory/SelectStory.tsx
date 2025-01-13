@@ -64,6 +64,7 @@ const SelectStory = ({navigation, route}) => {
       Papa.parse(csvData, {
         complete: (result: any) => {
           setStoryArray(result.data);
+          setSelectedSubcategory(result.data[0])
         },
         header: true,
       });

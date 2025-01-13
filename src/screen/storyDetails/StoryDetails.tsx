@@ -71,7 +71,7 @@ const StoryDetails = ({navigation, route}: any) => {
             duration={500}
             delay={index === 0 ? 200 : index * 200}
             style={styles.storyText}>
-            {word}{' '}
+            {word}{'  '}
           </Animatable.Text>
         ))}
       </View>
