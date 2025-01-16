@@ -19,6 +19,8 @@ import {Screen} from '../../constants/ScreenName';
 import userData from '../../helpers/userData';
 import {WordConstants} from '../../constants/WordConstants';
 import FastImage from 'react-native-fast-image';
+import { Colors } from '../../constants/Colors';
+import LinearGradient from 'react-native-linear-gradient';
 
 const CategoryScreen = () => {
   const [currentLanguage, setCurrentLanguage] = useState('English');
@@ -43,6 +45,44 @@ const CategoryScreen = () => {
     }
   };
 
+  const getBackgroundColor = (categoryName: any) => {
+    switch (categoryName) {
+      case 'FAIRY TALES':
+        return Colors.playerScreenColor;
+      case 'ANIMALS':
+        return Colors.animalBgColor;
+      case 'SUPERHERO':
+        return Colors.superHeroBgColor;
+      case 'SCIENCE':
+        return Colors.scienceBgColor;
+      case 'GEOGRAPHY':
+        return Colors.geographyBgColor;
+      case 'HISTORY':
+        return Colors.playerScreenColor;
+      default:
+        return null;
+    }
+  }
+
+  const getButtonColor = (categoryName: any) => {
+    switch (categoryName) {
+      case 'FAIRY TALES':
+        return Colors.fairyButtonColor;
+      case 'ANIMALS':
+        return Colors.animalButtonColor;
+      case 'SUPERHERO':
+        return Colors.superHeroButtonColor;
+      case 'SCIENCE':
+        return Colors.scienceButtonColor;
+      case 'GEOGRAPHY':
+        return Colors.geographyButtonColor;
+      case 'HISTORY':
+        return Colors.fairyButtonColor;
+      default:
+        return null;
+    }
+  }
+
   const navigationWithCategory = (item: any) => {
     navigation.navigate(Screen.selectStory, {
       subCategory: item,
@@ -64,14 +104,14 @@ const CategoryScreen = () => {
       direction="alternate"
       iterationCount={1}>
       <TouchableOpacity
-        style={styles.card}
+        style={[styles.card, {backgroundColor: getBackgroundColor(item.nameEng)}]}
         onPress={() => navigationWithCategory(item)}>
         <FastImage
           source={getCategoryImage(item.nameEng)}
           style={styles.heroImage}
           resizeMode="contain"
         />
-        <View style={styles.cardContent}>
+        <View style={[styles.cardContent, {backgroundColor: getButtonColor(item.nameEng)}]}>
           <Text style={styles.cardText}>
             {currentLanguage === 'English' ? item.nameEng : item.nameHin}
           </Text>
@@ -81,7 +121,7 @@ const CategoryScreen = () => {
   );
 
   return (
-    <View style={styles.container}>
+    <LinearGradient colors={[Colors.ageSelectionScreenBg1,Colors.geographyBgColor]} style={styles.container}>
       <View style={styles.selectLanguageContainer}>
         <Text style={styles.title}>
           {currentLanguage === 'English'
@@ -96,7 +136,7 @@ const CategoryScreen = () => {
         numColumns={2}
         contentContainerStyle={styles.list}
       />
-    </View>
+    </LinearGradient>
   );
 };
 
@@ -125,8 +165,8 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     alignItems: 'center',
     elevation: 5,
-    borderColor: '#F6A5AD',
-    borderWidth: 2,
+    // borderColor: '#F6A5AD',
+    // borderWidth: 2,
   },
   cardContent: {
     borderBottomLeftRadius: 20,
@@ -139,7 +179,7 @@ const styles = StyleSheet.create({
   cardText: {
     fontFamily: Fonts.portligatslab_regular,
     fontSize: 16,
-    color: '#fff',
+    color: 'black',
   },
   selectLanguageContainer: {
     marginTop: hp('5%'),

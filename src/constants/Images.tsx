@@ -12,4 +12,7 @@ export const Images = {
     namasteHandGif: require('../assets/images/NamasteHand.gif'),
     wavingHandGif: require('../assets/images/WavingHand.gif'),
     namasteHindi: require('../assets/images/NamasteHindi.png'),
+    toodlers1: require('../assets/images/Toodlers.png'),
+    toodlers3: require('../assets/images/SchoolToodlers.png'),
+    toodlers2: require('../assets/images/YoungMindToodlers.png'),
   };

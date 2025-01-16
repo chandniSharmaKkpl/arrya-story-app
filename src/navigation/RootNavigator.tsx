@@ -9,6 +9,7 @@ import StoryDetails from '../screen/storyDetails/StoryDetails';
 import SplashScreen from '../screen/splashScreen/SplashScreen';
 import SelectCategory from '../screen/selectCategory/SelectCategory';
 import SelectStory from '../screen/selectStory/SelectStory';
+import SelfRecordingScreen from '../screen/selfRecording/SelfRecordingScreen';
 import { Platform } from 'react-native';
 
 
@@ -28,6 +29,7 @@ const MainRoute: React.FC = () => {
                 <Stack.Screen name={Screen.selectStory} component={SelectStory} options={{ headerShown: false }}/>
                 <Stack.Screen name={Screen.storyDetails} component={StoryDetails} options={{ headerShown: false }}/>
                 <Stack.Screen name={Screen.player} component={Player} options={{ headerShown: false }}/>
+                <Stack.Screen name={Screen.selfRecording} component={SelfRecordingScreen} options={{ headerShown: false }}/>
                 <Stack.Screen name={Screen.splashScreen} component={SplashScreen} options={{ headerShown: false, gestureEnabled: false }}/>
             </Stack.Navigator>
         </NavigationContainer>

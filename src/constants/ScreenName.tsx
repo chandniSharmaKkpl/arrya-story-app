@@ -5,5 +5,6 @@ export const Screen = {
     player: 'player',
     splashScreen: 'splashScreen',
     selectCategory: 'selectCategory',
-    selectStory: 'selectStory'
+    selectStory: 'selectStory',
+    selfRecording: 'selfRecording'
 }

@@ -7,5 +7,20 @@ export const Colors = {
     hindiLanguageTextColor: '#ED4C5C',
     cardBorderColor: '#D9D9D9',
     storyDetailContainer: '#f9f9f9',
-    playerScreenColor: '#D5F2FE'
+    playerScreenColor: '#D5F2FE',
+    fairyButtonColor: '#3EC6FF',
+    animalButtonColor: '#ED4C5C',
+    animalBgColor: '#FFB9C0',
+    superHeroBgColor: '#FFDFA7',
+    superHeroButtonColor: '#FFC768',
+    scienceBgColor: '#BAFCE8',
+    scienceButtonColor: '#6FFFD3',
+    geographyBgColor: '#C4D5FA',
+    geographyButtonColor: '#5D90FF',
+    ageCardColor1: '#A2E3FE',
+    ageCardColor2: '#BAFCE8',
+    ageCardColor3: '#C4D5FA',
+    ageSelectionScreenBg1: '#FFFFFF',
+    ageSelectionScreenBg2: '#FFDFA7',
+    selectStoryLinearGradient: '#FFD2DE'
   };

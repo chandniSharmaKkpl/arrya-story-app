@@ -2,6 +2,10 @@
   "migIndex": 1,
   "data": [
     {
+      "path": "src/assets/fonts/Katibeh-Regular.ttf",
+      "sha1": "b9a33b10610cfda76b5600705750a2668331e7bb"
+    },
+    {
       "path": "src/assets/fonts/Poppins-Bold.ttf",
       "sha1": "875cf0cecd647bcf22e79d633d868c1b1ec98dfa"
     },
@@ -24,6 +28,10 @@
     {
       "path": "src/assets/fonts/Poppins-SemiBold.ttf",
       "sha1": "8a4ace9392d06bcb7f8ea2f5169b07e4c383a90d"
+    },
+    {
+      "path": "src/assets/fonts/PortLligatSlab-Regular.ttf",
+      "sha1": "fa01bd5261af6e079f157ddae730d1bedd0b70f2"
     }
   ]
 }

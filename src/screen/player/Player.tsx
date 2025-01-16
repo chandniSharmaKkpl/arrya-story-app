@@ -265,7 +265,7 @@ const Player = ({navigation, route}) => {
   };
 
   const formatGoogleDriveLink = (link: string) => {
-    if (link.includes('/file/d/') && link.includes('/view?')) {
+    if (link?.includes('/file/d/') && link?.includes('/view?')) {
       return link
         .replace('/file/d/', '/uc?export=view&id=')
         .replace('/view?usp=drive_link', '');

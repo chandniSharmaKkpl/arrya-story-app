@@ -5,5 +5,6 @@ export const Fonts = {
     poppins_medium: 'Poppins-Medium',
     poppins_regular: 'Poppins-Regular',
     poppins_semibold: 'Poppins-SemiBold',
-    portligatslab_regular: 'PortLligatSlab-Regular'
+    portligatslab_regular: 'PortLligatSlab-Regular',
+    katibeh_regular: 'Katibeh-Regular'
   };

@@ -24,6 +24,7 @@
     "react-native-fast-image": "^8.6.3",
     "react-native-fs": "^2.20.0",
     "react-native-google-mobile-ads": "^14.8.0",
+    "react-native-linear-gradient": "^2.8.3",
     "react-native-responsive-screen": "^1.4.2",
     "react-native-safe-area-context": "^5.0.0",
     "react-native-screens": "^4.4.0",

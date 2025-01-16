@@ -2,6 +2,7 @@ import React, {useEffect, useRef, useState} from 'react';
 import {
   Button,
   Image,
+  Platform,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -19,6 +20,7 @@ import * as Animatable from 'react-native-animatable';
 import userData from '../../helpers/userData';
 import {WordConstants} from '../../constants/WordConstants';
 import FastImage from 'react-native-fast-image';
+import LinearGradient from 'react-native-linear-gradient';
 
 const AgeSelection = ({navigation}) => {
   const [selectedAge, setSelectedAge] = useState('0to5');
@@ -48,7 +50,9 @@ const AgeSelection = ({navigation}) => {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <LinearGradient
+      colors={[Colors.ageSelectionScreenBg1, Colors.ageSelectionScreenBg2]}
+      style={styles.container}>
       <Animatable.View
         animation="fadeInDown"
         duration={1000}
@@ -69,11 +73,51 @@ const AgeSelection = ({navigation}) => {
           delay={1000}
           direction="alternate"
           iterationCount={1}>
-          <TouchableOpacity
-            style={styles.ageOptionContainer}
-            onPress={() => setSelectedAge('0to5')}
-            activeOpacity={1}>
-            <View>
+          <View style={styles.ageOptionContainer1}>
+            <View style={styles.toodlerImageContainer}>
+              <FastImage
+                source={Images.toodlers1}
+                style={styles.toodlerImage}
+              />
+            </View>
+            <View style={styles.toodlerTextContainer}>
+              <View
+                style={{
+                  marginTop:
+                    currentLanguage === 'English' && Platform.OS === 'ios'
+                      ? hp('2.5%')
+                      : 0,
+                }}>
+                <Text style={styles.toodlerText}>
+                  {currentLanguage === 'English'
+                    ? WordConstants.ageWord1[0]
+                    : WordConstants.ageWord1[1]}
+                </Text>
+              </View>
+              <View style={styles.ageButtonContainer}>
+                <TouchableOpacity
+                  style={
+                    selectedAge === '0to5'
+                      ? styles.ageSelectionButton
+                      : styles.emptySelectionButton
+                  }
+                  onPress={() => setSelectedAge('0to5')}
+                  activeOpacity={1}>
+                  <Text
+                    style={{
+                      color:
+                        selectedAge === '0to5'
+                          ? Colors.ageSelectionScreenBg1
+                          : 'black',
+                    }}>
+                    {currentLanguage === 'English'
+                      ? WordConstants.zeroToFive[0]
+                      : WordConstants.zeroToFive[1]}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+            {/* <View>
               <Text>
                 {currentLanguage === 'English'
                   ? WordConstants.zeroToFive[0]
@@ -93,8 +137,8 @@ const AgeSelection = ({navigation}) => {
                   resizeMode="contain"
                 />
               )}
-            </View>
-          </TouchableOpacity>
+            </View> */}
+          </View>
         </Animatable.View>
         <Animatable.View
           animation="fadeInDown"
@@ -102,7 +146,53 @@ const AgeSelection = ({navigation}) => {
           delay={1500}
           direction="alternate"
           iterationCount={1}>
-          <TouchableOpacity
+          <View style={styles.ageOptionContainer2}>
+            <View style={styles.toodlerImageContainer}>
+              <FastImage
+                source={Images.toodlers2}
+                style={styles.toodlerImage}
+              />
+            </View>
+            <View style={styles.toodlerTextContainer}>
+              <View
+                style={{
+                  marginTop:
+                    currentLanguage === 'English' && Platform.OS === 'ios'
+                      ? hp('2.5%')
+                      : 0,
+                }}>
+                <Text style={styles.toodlerText}>
+                  {currentLanguage === 'English'
+                    ? WordConstants.ageWord2[0]
+                    : WordConstants.ageWord2[1]}
+                </Text>
+              </View>
+              <View
+                style={styles.ageButtonContainer}>
+                <TouchableOpacity
+                  style={
+                    selectedAge === '5to10'
+                      ? styles.ageSelectionButton
+                      : styles.emptySelectionButton
+                  }
+                  onPress={() => setSelectedAge('5to10')}
+                  activeOpacity={1}>
+                  <Text
+                    style={{
+                      color:
+                        selectedAge === '5to10'
+                          ? Colors.ageSelectionScreenBg1
+                          : 'black',
+                    }}>
+                    {currentLanguage === 'English'
+                      ? WordConstants.fiveToTen[0]
+                      : WordConstants.fiveToTen[1]}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+          {/* <TouchableOpacity
             style={styles.ageOptionContainer}
             onPress={() => setSelectedAge('5to10')}
             activeOpacity={1}>
@@ -127,7 +217,7 @@ const AgeSelection = ({navigation}) => {
                 />
               )}
             </View>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </Animatable.View>
         <Animatable.View
           animation="fadeInDown"
@@ -135,32 +225,52 @@ const AgeSelection = ({navigation}) => {
           delay={2000}
           direction="alternate"
           iterationCount={1}>
-          <TouchableOpacity
-            style={styles.ageOptionContainer}
-            onPress={() => setSelectedAge('10to15')}
-            activeOpacity={1}>
-            <View>
-              <Text>
-                {currentLanguage === 'English'
-                  ? WordConstants.tenToFifteen[0]
-                  : WordConstants.tenToFifteen[1]}
-              </Text>
+          <View style={styles.ageOptionContainer3}>
+            <View style={styles.toodlerImageContainer}>
+              <FastImage
+                source={Images.toodlers3}
+                style={styles.toodlerImage}
+              />
             </View>
-            <View
-              style={
-                selectedAge === '10to15'
-                  ? styles.radioButtonContainer
-                  : styles.emptyRadioContainer
-              }>
-              {selectedAge === '10to15' && (
-                <FastImage
-                  source={Images.checkIcon}
-                  style={styles.checkIcon}
-                  resizeMode="contain"
-                />
-              )}
+            <View style={styles.toodlerTextContainer}>
+              <View
+                style={{
+                  marginTop:
+                    currentLanguage === 'English' && Platform.OS === 'ios'
+                      ? hp('2.5%')
+                      : 0,
+                }}>
+                <Text style={styles.toodlerText}>
+                  {currentLanguage === 'English'
+                    ? WordConstants.ageWord3[0]
+                    : WordConstants.ageWord3[1]}
+                </Text>
+              </View>
+              <View
+                style={styles.ageButtonContainer}>
+                <TouchableOpacity
+                  style={
+                    selectedAge === '10to15'
+                      ? styles.ageSelectionButton
+                      : styles.emptySelectionButton
+                  }
+                  onPress={() => setSelectedAge('10to15')}
+                  activeOpacity={1}>
+                  <Text
+                    style={{
+                      color:
+                        selectedAge === '10to15'
+                          ? Colors.ageSelectionScreenBg1
+                          : 'black',
+                    }}>
+                    {currentLanguage === 'English'
+                      ? WordConstants.tenToFifteen[0]
+                      : WordConstants.tenToFifteen[1]}
+                  </Text>
+                </TouchableOpacity>
+              </View>
             </View>
-          </TouchableOpacity>
+          </View>
         </Animatable.View>
       </View>
       <TouchableOpacity style={styles.continueButton} onPress={handleContinue}>
@@ -170,28 +280,29 @@ const AgeSelection = ({navigation}) => {
             : WordConstants.continueButton[1]}
         </Text>
       </TouchableOpacity>
-    </View>
+    </LinearGradient>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    // backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'flex-start',
   },
   selectLanguageContainer: {
-    marginTop: hp('10%'),
+    // backgroundColor:'green',
+    marginTop: Platform.OS === 'android' ? hp('3%') : hp('6%'),
   },
   title: {
     fontFamily: Fonts.poppins_medium,
     fontSize: 26,
-    marginBottom: 20,
+    // marginBottom: 20,
   },
   continueButton: {
     justifyContent: 'center',
-    marginBottom: hp('5%'),
+    marginBottom: Platform.OS === 'android' ? hp('3%') : hp('6%'),
     width: '90%',
     padding: hp('0.5%'),
     backgroundColor: Colors.continueButtonColor,
@@ -205,16 +316,46 @@ const styles = StyleSheet.create({
   },
   ageSelectionMenu: {
     flex: 1,
-    marginTop: hp('5%'),
+    // marginTop: hp('5%'),
   },
-  ageOptionContainer: {
+  ageOptionContainer1: {
+    // backgroundColor: 'yellow',
+    backgroundColor: Colors.ageCardColor1,
     flexDirection: 'row',
     width: wp('90%'),
-    height: hp('6%'),
+    height: hp('20%'),
     borderWidth: 2,
-    borderColor: Colors.cardBorderColor,
+    borderColor: 'transparent',
     borderRadius: 20,
-    alignItems: 'center',
+    alignItems: 'flex-start',
+    paddingHorizontal: 20,
+    justifyContent: 'space-between',
+    marginTop: hp('5%'),
+  },
+  ageOptionContainer2: {
+    // backgroundColor: 'yellow',
+    backgroundColor: Colors.ageCardColor2,
+    flexDirection: 'row',
+    width: wp('90%'),
+    height: hp('20%'),
+    borderWidth: 2,
+    borderColor: 'transparent',
+    borderRadius: 20,
+    alignItems: 'flex-start',
+    paddingHorizontal: 20,
+    justifyContent: 'space-between',
+    marginTop: hp('5%'),
+  },
+  ageOptionContainer3: {
+    // backgroundColor: 'yellow',
+    backgroundColor: Colors.ageCardColor3,
+    flexDirection: 'row',
+    width: wp('90%'),
+    height: hp('20%'),
+    borderWidth: 2,
+    borderColor: 'transparent',
+    borderRadius: 20,
+    alignItems: 'flex-start',
     paddingHorizontal: 20,
     justifyContent: 'space-between',
     marginTop: hp('5%'),
@@ -239,6 +380,52 @@ const styles = StyleSheet.create({
   checkIcon: {
     height: 15,
     width: 15,
+  },
+  toodlerImageContainer: {
+    flex: 1,
+    // backgroundColor: 'green',
+    marginTop: hp('1.9%'),
+  },
+  toodlerImage: {
+    height: hp('16%'),
+    width: wp('32%'),
+  },
+  toodlerTextContainer: {
+    flex: 1.4,
+    // backgroundColor: 'yellow',
+    marginTop: hp('1.5%'),
+  },
+  toodlerText: {
+    fontFamily: Fonts.katibeh_regular,
+    fontSize: Platform.OS === 'android' ? hp('1.7%') : hp('2.3%'),
+    textAlign: 'center',
+  },
+  ageSelectionButton: {
+    borderColor: Colors.continueButtonColor,
+    borderWidth: 1,
+    backgroundColor: Colors.continueButtonColor,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: hp('1%'),
+    marginHorizontal: hp('1.5%'),
+    borderRadius: 25,
+    // marginTop: hp('1.2%'),
+  },
+  emptySelectionButton: {
+    borderColor: Colors.continueButtonColor,
+    borderWidth: 1,
+    backgroundColor: 'transparent',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: hp('1%'),
+    marginHorizontal: hp('1.5%'),
+    borderRadius: 25,
+    // marginTop: hp('1.2%'),
+  },
+  ageButtonContainer: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    marginBottom: 15,
   },
 });
 

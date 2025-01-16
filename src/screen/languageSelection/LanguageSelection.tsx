@@ -114,6 +114,9 @@ const LanguageSelectionScreen = ({navigation}: any) => {
       <TouchableOpacity style={styles.continueButton} onPress={handleContinue}>
         <Text style={styles.continueText}>Continue</Text>
       </TouchableOpacity>
+      <TouchableOpacity style={styles.continueButton} onPress={() => navigation.navigate(Screen.selfRecording)}>
+        <Text style={styles.continueText}>Self Recording 🎙️</Text>
+      </TouchableOpacity>
     </View>
   );
 };
