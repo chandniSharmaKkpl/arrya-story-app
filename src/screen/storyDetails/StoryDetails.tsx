@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useEffect, useState} from 'react';
-import {View, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, StyleSheet, TouchableOpacity, FlatList, Dimensions} from 'react-native';
 import AppText from '../../globals/components/appText/AppTest';
 import {Screen} from '../../constants/ScreenName';
 import {
@@ -13,9 +13,10 @@ import userData from '../../helpers/userData';
 import {Images} from '../../constants/Images';
 import {Fonts} from '../../constants/Fonts';
 import FastImage from 'react-native-fast-image';
+import LinearGradient from 'react-native-linear-gradient';
 
 const StoryDetails = ({navigation, route}: any) => {
-  const [currentLanguage, setCurrentLanguage] = useState('English');
+  const [currentLanguage, setCurrentLanguage] = useState(null);
   const storyData = route?.params?.storyData;
 
   useEffect(() => {
@@ -31,9 +32,27 @@ const StoryDetails = ({navigation, route}: any) => {
     : storyData.StoryHindi;
 
   const storyWords = storyText.split(/\s+/);
+  console.log('storyWords', storyWords)
+
+  const renderItem = ({item, index} : any) => {
+    console.log('item', item)
+    return (
+      <Animatable.Text
+        key={index}
+        animation="fadeIn"
+        duration={500}
+        delay={index === 0 ? 200 : index * 200}
+        style={styles.storyText}>
+        {item}
+        {'  '}
+      </Animatable.Text>
+    );
+  };
 
   return (
-    <View style={styles.container}>
+    <LinearGradient
+      colors={[Colors.ageSelectionScreenBg1, Colors.selectStoryLinearGradient]}
+      style={styles.container}>
       <Animatable.View
         animation="fadeIn"
         duration={1000}
@@ -59,23 +78,20 @@ const StoryDetails = ({navigation, route}: any) => {
               storyData: storyData,
             })
           }>
-          <FastImage source={Images.playAudioImage} style={styles.playMusicIcon} />
+          <FastImage
+            source={Images.playAudioImage}
+            style={styles.playMusicIcon}
+          />
         </TouchableOpacity>
       </Animatable.View>
-
-      <View style={styles.storyContainer}>
-        {storyWords.map((word: any , index: any) => (
-          <Animatable.Text
-            key={index}
-            animation="fadeIn"
-            duration={500}
-            delay={index === 0 ? 200 : index * 200}
-            style={styles.storyText}>
-            {word}{'  '}
-          </Animatable.Text>
-        ))}
-      </View>
-    </View>
+      <FlatList
+        data={storyWords}
+        renderItem={renderItem}
+        keyExtractor={(item, index) => index.toString()}
+        contentContainerStyle={styles.storyContainer}
+        numColumns={7}
+      />
+    </LinearGradient>
   );
 };
 
@@ -83,6 +99,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
+    justifyContent: 'center',
     marginTop: hp('6%'),
   },
   subCategoryContainer: {
@@ -91,11 +108,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   storyContainer: {
+    alignSelf: 'center',
     paddingHorizontal: 20,
     marginTop: hp('5%'),
-    width: '100%',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+    width: '80%',
+    // flexDirection: 'row',
+    // flexWrap: 'wrap',
+    // backgroundColor: 'red'
   },
   storyHeadingContainer: {
     backgroundColor: Colors.continueButtonColor,
@@ -116,11 +135,12 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   storyText: {
-    fontFamily: Fonts.poppins_regular,
+    fontFamily: Fonts.katibeh_regular,
     color: '#000',
     fontSize: 18,
     lineHeight: 24,
-    flexWrap: 'wrap'
+    textAlign: 'center'
+    // flexWrap: 'wrap',
   },
 });
 

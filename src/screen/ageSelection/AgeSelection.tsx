@@ -23,15 +23,16 @@ import FastImage from 'react-native-fast-image';
 import LinearGradient from 'react-native-linear-gradient';
 
 const AgeSelection = ({navigation}) => {
-  const [selectedAge, setSelectedAge] = useState('0to5');
-  const [currentLanguage, setCurrentLanguage] = useState('English');
+  const [selectedAge, setSelectedAge] = useState(null);
+  const [currentLanguage, setCurrentLanguage] = useState(null);
 
-  const handleContinue = async () => {
+  const handleContinue = async (age: any) => {
+    setSelectedAge(age)
     const existingUserData = await userData.getUserData();
     if (existingUserData && Object.keys(existingUserData).length > 0) {
       const updatedUserData = {
         ...existingUserData,
-        selectedAge: selectedAge,
+        selectedAge: age,
       };
       await userData.setUserData(updatedUserData);
     } else {
@@ -51,7 +52,7 @@ const AgeSelection = ({navigation}) => {
 
   return (
     <LinearGradient
-      colors={[Colors.ageSelectionScreenBg1, Colors.ageSelectionScreenBg2]}
+      colors={[Colors.ageSelectionScreenBg1, Colors.selectStoryLinearGradient]}
       style={styles.container}>
       <Animatable.View
         animation="fadeInDown"
@@ -101,7 +102,7 @@ const AgeSelection = ({navigation}) => {
                       ? styles.ageSelectionButton
                       : styles.emptySelectionButton
                   }
-                  onPress={() => setSelectedAge('0to5')}
+                  onPress={() => handleContinue('0to5')}
                   activeOpacity={1}>
                   <Text
                     style={{
@@ -117,27 +118,6 @@ const AgeSelection = ({navigation}) => {
                 </TouchableOpacity>
               </View>
             </View>
-            {/* <View>
-              <Text>
-                {currentLanguage === 'English'
-                  ? WordConstants.zeroToFive[0]
-                  : WordConstants.zeroToFive[1]}
-              </Text>
-            </View>
-            <View
-              style={
-                selectedAge === '0to5'
-                  ? styles.radioButtonContainer
-                  : styles.emptyRadioContainer
-              }>
-              {selectedAge === '0to5' && (
-                <FastImage
-                  source={Images.checkIcon}
-                  style={styles.checkIcon}
-                  resizeMode="contain"
-                />
-              )}
-            </View> */}
           </View>
         </Animatable.View>
         <Animatable.View
@@ -175,7 +155,7 @@ const AgeSelection = ({navigation}) => {
                       ? styles.ageSelectionButton
                       : styles.emptySelectionButton
                   }
-                  onPress={() => setSelectedAge('5to10')}
+                  onPress={() => handleContinue('5to10')}
                   activeOpacity={1}>
                   <Text
                     style={{
@@ -192,32 +172,6 @@ const AgeSelection = ({navigation}) => {
               </View>
             </View>
           </View>
-          {/* <TouchableOpacity
-            style={styles.ageOptionContainer}
-            onPress={() => setSelectedAge('5to10')}
-            activeOpacity={1}>
-            <View>
-              <Text>
-                {currentLanguage === 'English'
-                  ? WordConstants.fiveToTen[0]
-                  : WordConstants.fiveToTen[1]}
-              </Text>
-            </View>
-            <View
-              style={
-                selectedAge === '5to10'
-                  ? styles.radioButtonContainer
-                  : styles.emptyRadioContainer
-              }>
-              {selectedAge === '5to10' && (
-                <FastImage
-                  source={Images.checkIcon}
-                  style={styles.checkIcon}
-                  resizeMode="contain"
-                />
-              )}
-            </View>
-          </TouchableOpacity> */}
         </Animatable.View>
         <Animatable.View
           animation="fadeInDown"
@@ -254,7 +208,7 @@ const AgeSelection = ({navigation}) => {
                       ? styles.ageSelectionButton
                       : styles.emptySelectionButton
                   }
-                  onPress={() => setSelectedAge('10to15')}
+                  onPress={() => handleContinue('10to15')}
                   activeOpacity={1}>
                   <Text
                     style={{
@@ -273,13 +227,6 @@ const AgeSelection = ({navigation}) => {
           </View>
         </Animatable.View>
       </View>
-      <TouchableOpacity style={styles.continueButton} onPress={handleContinue}>
-        <Text style={styles.continueText}>
-          {currentLanguage === 'English'
-            ? WordConstants.continueButton[0]
-            : WordConstants.continueButton[1]}
-        </Text>
-      </TouchableOpacity>
     </LinearGradient>
   );
 };

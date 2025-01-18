@@ -27,10 +27,11 @@ import {
 import Slider from '@react-native-community/slider';
 import {categories} from '../../constants/CategoryConstant';
 import FastImage from 'react-native-fast-image';
+import LinearGradient from 'react-native-linear-gradient';
 
 const Player = ({navigation, route}) => {
   const [isPaused, setIsPaused] = useState(false);
-  const [currentLanguage, setCurrentLanguage] = useState('English');
+  const [currentLanguage, setCurrentLanguage] = useState(null);
   const [currentTime, setCurrentTime] = useState(0); // Current playback time
   const [duration, setDuration] = useState(0); // Total duration of the audio
   const storyData = route?.params?.storyData;
@@ -98,6 +99,9 @@ const Player = ({navigation, route}) => {
       RewardedAdEventType.LOADED,
       () => {
         rewarded.show();
+        if (currentSoundRef.current?.isPlaying()) {
+          currentSoundRef.current.pause(() => setIsPaused(true));
+        }
       },
     );
 
@@ -275,7 +279,7 @@ const Player = ({navigation, route}) => {
   const formattedLink = formatGoogleDriveLink(storyData.SubCategoryImage);
 
   return (
-    <View style={styles.container}>
+    <LinearGradient colors={[Colors.ageSelectionScreenBg1, Colors.selectStoryLinearGradient]} style={styles.container}>
       <View style={styles.imageContainer}>
         <FastImage
           source={{uri: formattedLink, priority: FastImage.priority.high}}
@@ -329,7 +333,7 @@ const Player = ({navigation, route}) => {
           <Text style={styles.button}>Stop</Text>
         </TouchableOpacity> */}
       </View>
-    </View>
+    </LinearGradient>
   );
 };
 

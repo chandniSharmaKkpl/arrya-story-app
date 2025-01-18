@@ -23,7 +23,7 @@ import { Colors } from '../../constants/Colors';
 import LinearGradient from 'react-native-linear-gradient';
 
 const CategoryScreen = () => {
-  const [currentLanguage, setCurrentLanguage] = useState('English');
+  const [currentLanguage, setCurrentLanguage] = useState(null);
   const navigation = useNavigation();
 
   const getCategoryImage = (categoryName: any) => {
@@ -121,7 +121,7 @@ const CategoryScreen = () => {
   );
 
   return (
-    <LinearGradient colors={[Colors.ageSelectionScreenBg1,Colors.geographyBgColor]} style={styles.container}>
+    <LinearGradient colors={[Colors.ageSelectionScreenBg1,Colors.selectStoryLinearGradient]} style={styles.container}>
       <View style={styles.selectLanguageContainer}>
         <Text style={styles.title}>
           {currentLanguage === 'English'
@@ -143,7 +143,7 @@ const CategoryScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: wp('2%'),
+    // padding: wp('2%'),
     backgroundColor: '#fff',
   },
   title: {
@@ -158,7 +158,7 @@ const styles = StyleSheet.create({
   },
   card: {
     flex: 1,
-    margin: wp('2%'),
+    margin: wp('3.5%'),
     height: hp('20%'),
     backgroundColor: '#E3F2FD',
     borderRadius: 20,
@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   cardText: {
-    fontFamily: Fonts.portligatslab_regular,
+    fontFamily: Fonts.katibeh_regular,
     fontSize: 16,
     color: 'black',
   },

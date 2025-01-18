@@ -12,26 +12,28 @@ import * as Animatable from 'react-native-animatable';
 import userData from '../../helpers/userData';
 import { WordConstants } from '../../constants/WordConstants';
 import FastImage from 'react-native-fast-image';
+import LinearGradient from 'react-native-linear-gradient';
 
 const LanguageSelectionScreen = ({navigation}: any) => {
-  const [selectedLanguage, setSelectedLanguage] = useState('English');
+  const [selectedLanguage, setSelectedLanguage] = useState(null);
 
-  const handleContinue = async () => {
+  const handleContinue = async (lang: any ) => {
+    setSelectedLanguage(lang)
     const existingUserData = await userData.getUserData();
     if (existingUserData && Object.keys(existingUserData).length > 0) {
       const updatedUserData = {
         ...existingUserData,
-        selectedLanguage: selectedLanguage,
+        selectedLanguage: lang,
       };
       await userData.setUserData(updatedUserData);
     } else {
-      await userData.setUserData({ selectedLanguage: selectedLanguage });
+      await userData.setUserData({ selectedLanguage: lang });
     }
     navigation.navigate(Screen.ageSelection);
   };
 
   return (
-    <View style={styles.container}>
+    <LinearGradient colors={[Colors.ageSelectionScreenBg1, Colors.selectStoryLinearGradient]} style={styles.container}>
       <View style={styles.selectLanguageContainer}>
         <Text style={styles.title}>Select Your Language</Text>
       </View>
@@ -65,7 +67,7 @@ const LanguageSelectionScreen = ({navigation}: any) => {
         <View style={styles.optionsContainer}>
           <TouchableOpacity
             style={styles.option}
-            onPress={() => setSelectedLanguage('English')}
+            onPress={() => handleContinue('English')}
             activeOpacity={1}>
             <View
               style={
@@ -88,7 +90,7 @@ const LanguageSelectionScreen = ({navigation}: any) => {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.option}
-            onPress={() => setSelectedLanguage('Hindi')}
+            onPress={() => handleContinue('Hindi')}
             activeOpacity={1}>
             <View
               style={
@@ -111,13 +113,13 @@ const LanguageSelectionScreen = ({navigation}: any) => {
           </TouchableOpacity>
         </View>
       </View>
-      <TouchableOpacity style={styles.continueButton} onPress={handleContinue}>
+      {/* <TouchableOpacity style={styles.continueButton} onPress={handleContinue}>
         <Text style={styles.continueText}>Continue</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.continueButton} onPress={() => navigation.navigate(Screen.selfRecording)}>
         <Text style={styles.continueText}>Self Recording 🎙️</Text>
-      </TouchableOpacity>
-    </View>
+      </TouchableOpacity> */}
+    </LinearGradient>
   );
 };
 
@@ -166,7 +168,7 @@ const styles = StyleSheet.create({
     right: 5,
   },
   languageSelectionContainer: {
-    paddingBottom: hp('15%'),
+    paddingBottom: hp('25%'),
     flex: 1,
     justifyContent: 'center',
   },

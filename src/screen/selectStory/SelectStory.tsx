@@ -22,21 +22,24 @@ import {StoryFiles} from '../../constants/StoryFile';
 import userData from '../../helpers/userData';
 import {WordConstants} from '../../constants/WordConstants';
 import FastImage from 'react-native-fast-image';
+import LinearGradient from 'react-native-linear-gradient';
+import {categories} from '../../constants/CategoryConstant';
 
 const SelectStory = ({navigation, route}) => {
   const [storyArray, setStoryArray] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedSubcategory, setSelectedSubcategory] = useState(null);
-  const [currentLanguage, setCurrentLanguage] = useState('English');
+  const [currentLanguage, setCurrentLanguage] = useState(null);
   const subCategories = route?.params?.subCategory;
 
-  const handleContinue = () => {
+  const handleContinue = (category: any) => {
+    setSelectedSubcategory(category);
     navigation.navigate(Screen.storyDetails, {
-      storyData: selectedSubcategory,
+      storyData: category,
     });
   };
 
-  const getCategoryName = (categoryName: any) => {
+  const getCategoryFile = (categoryName: any) => {
     switch (categoryName) {
       case 'FAIRY TALES':
         return StoryFiles.FAIRYTALES;
@@ -55,8 +58,51 @@ const SelectStory = ({navigation, route}) => {
     }
   };
 
+  const getBackgroundColor = (index: any) => {
+    switch (index) {
+      case 0:
+        return Colors.ageCardColor1;
+      case 1:
+        return Colors.ageCardColor2;
+      case 2:
+        return Colors.ageCardColor3;
+      case 3:
+        return Colors.superHeroBgColor;
+      case 4:
+        return Colors.animalBgColor;
+      case 5:
+        return Colors.ageCardColor1;
+      default:
+        return null;
+    }
+  };
+
+  const getCategoryName = (
+    currentLanguage: string,
+    categoryName: string | number,
+  ) => {
+    const nameMapping = {
+      FairyTales: 'FAIRY TALES',
+      Animals: 'ANIMALS',
+      ScienceAdventure: 'SCIENCE',
+      Geography: 'GEOGRAPHY',
+      History: 'HISTORY',
+      SuperHero: 'SUPERHERO',
+    };
+
+    const mappedName = nameMapping[categoryName];
+
+    if (mappedName) {
+      const category = categories.find(cat => cat.nameEng === mappedName);
+      if (category) {
+        return currentLanguage === 'Hindi' ? category.nameHin : categoryName;
+      }
+    }
+    return null;
+  };
+
   const fetchStory = async () => {
-    const getCategory = getCategoryName(subCategories.nameEng);
+    const getCategory = getCategoryFile(subCategories.nameEng);
     setLoading(true);
     try {
       const response = await fetch(getCategory);
@@ -64,7 +110,6 @@ const SelectStory = ({navigation, route}) => {
       Papa.parse(csvData, {
         complete: (result: any) => {
           setStoryArray(result.data);
-          setSelectedSubcategory(result.data[0])
         },
         header: true,
       });
@@ -85,49 +130,35 @@ const SelectStory = ({navigation, route}) => {
   }, []);
 
   const renderItem = ({item, index}: any) => {
+    console.log('item', item);
     return (
-      <View style={styles.ageSelectionMenu}>
-        <Animatable.View
-          animation="fadeInDown"
-          duration={1000}
-          delay={index === 0 ? 500 : index * 500}
-          direction="alternate"
-          iterationCount={1}
-          style={styles.storyItemContainer}>
-          <TouchableOpacity
-            style={styles.ageOptionContainer}
-            onPress={() => setSelectedSubcategory(item)}
-            activeOpacity={1}>
-            <Text style={styles.subCategoryText}>
+      <Animatable.View
+        animation="zoomIn"
+        delay={index * 200}
+        direction="alternate"
+        iterationCount={1}>
+        <TouchableOpacity
+          style={[styles.card, {backgroundColor: getBackgroundColor(index)}]}
+          onPress={() => handleContinue(item)}>
+          <View style={styles.heroImage}>
+            <Text style={styles.cardText}>
+              {getCategoryName(currentLanguage, item.Category)}
+            </Text>
+            <Text style={styles.cardText}>
               {currentLanguage === 'English'
                 ? item.SubCategoryEng
                 : item.SubCategoryHin}
             </Text>
-            <View
-              style={
-                selectedSubcategory?.SubCategoryEng === item.SubCategoryEng ||
-                selectedSubcategory?.SubCategoryHin === item.SubCategoryHin
-                  ? styles.radioButtonContainer
-                  : styles.emptyRadioContainer
-              }>
-              {(selectedSubcategory?.SubCategoryEng === item.SubCategoryEng ||
-                selectedSubcategory?.SubCategoryHin ===
-                  item.SubCategoryHin) && (
-                <FastImage
-                  source={Images.checkIcon}
-                  style={styles.checkIcon}
-                  resizeMode="contain"
-                />
-              )}
-            </View>
-          </TouchableOpacity>
-        </Animatable.View>
-      </View>
+          </View>
+        </TouchableOpacity>
+      </Animatable.View>
     );
   };
 
   return (
-    <View style={styles.container}>
+    <LinearGradient
+      colors={[Colors.ageSelectionScreenBg1, Colors.selectStoryLinearGradient]}
+      style={styles.container}>
       {loading ? (
         <ActivityIndicator size="large" color="#000" />
       ) : (
@@ -147,21 +178,13 @@ const SelectStory = ({navigation, route}) => {
           <FlatList
             data={storyArray.slice(0, 3)}
             renderItem={renderItem}
+            numColumns={2}
             keyExtractor={(item, index) => index.toString()}
             contentContainerStyle={styles.flatListContainerStyle}
           />
-          <TouchableOpacity
-            style={styles.continueButton}
-            onPress={handleContinue}>
-            <Text style={styles.continueText}>
-              {currentLanguage === 'English'
-                ? WordConstants.continueButton[0]
-                : WordConstants.continueButton[1]}
-            </Text>
-          </TouchableOpacity>
         </>
       )}
-    </View>
+    </LinearGradient>
   );
 };
 
@@ -240,8 +263,41 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   flatListContainerStyle: {
-    justifyContent: 'center'
-  }
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+  },
+  card: {
+    flex: 1,
+    margin: wp('3.5%'),
+    height: hp('20%'),
+    backgroundColor: '#E3F2FD',
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    elevation: 5,
+    // borderColor: '#F6A5AD',
+    // borderWidth: 2,
+  },
+  heroImage: {
+    height: hp('16%'),
+    width: hp('20%'),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  cardContent: {
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20,
+    width: '100%',
+    backgroundColor: '#ED4C5C',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  cardText: {
+    fontFamily: Fonts.katibeh_regular,
+    fontSize: 20,
+    color: 'black',
+    textAlign: 'center'
+  },
 });
 
 export default SelectStory;
